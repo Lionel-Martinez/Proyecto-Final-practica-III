@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DeviceController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -22,6 +23,10 @@ Route::middleware('auth')->group(function () {
         return view('clientes');
     })->name('clientes.index');
 
+    Route::get('/clientes/{customer}', function (\App\Models\Customer $customer) {
+        return view('cliente', compact('customer'));
+    })->name('clientes.show');
+
     // API de clientes
     Route::prefix('api/clientes')->group(function () {
         Route::get('/', [CustomerController::class, 'index'])->name('api.clientes.index');
@@ -29,5 +34,20 @@ Route::middleware('auth')->group(function () {
         Route::get('/{customer}', [CustomerController::class, 'show'])->name('api.clientes.show');
         Route::put('/{customer}', [CustomerController::class, 'update'])->name('api.clientes.update');
         Route::delete('/{customer}', [CustomerController::class, 'destroy'])->name('api.clientes.destroy');
+    });
+
+    // API de dispositivos
+    Route::prefix('api/clientes/{customer}/dispositivos')->group(function () {
+        Route::get('/', [DeviceController::class, 'index'])
+            ->name('api.dispositivos.index');
+
+        Route::post('/', [DeviceController::class, 'store'])
+            ->name('api.dispositivos.store');
+
+        Route::put('/{device}', [DeviceController::class, 'update'])
+            ->name('api.dispositivos.update');
+
+        Route::delete('/{device}', [DeviceController::class, 'destroy'])
+            ->name('api.dispositivos.destroy');
     });
 });
