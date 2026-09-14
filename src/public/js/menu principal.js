@@ -21,7 +21,7 @@ const LAUNCHER_ROUTES = {
   "prioridades": "Work queue.html",
   "rentabilidad": "Analytics.html",
   "stock": "inventory.html",
-  "clientes": "Clientes.html",
+  "clientes": "/clientes",
   "ordenes-activas": "Ordenes activas.html",
   "caja": "Caja Factura.html",
   "admin": "Admin.html",
