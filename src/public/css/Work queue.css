@@ -1,0 +1,728 @@
+/* Se carga después de "menu principal.css": header, sidebar, tipografías
+   y colores de marca ya están resueltos ahí. Acá solo lo de esta pantalla. */
+
+.breadcrumb {
+  margin: 0 0 0.6rem;
+  font-family: "Courier New", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #9aa0a8;
+}
+
+.breadcrumb a {
+  color: #9aa0a8;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  color: #14161a;
+}
+
+.breadcrumb strong {
+  color: #14161a;
+}
+
+/* ---------- tablero ---------- */
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.1rem;
+  align-items: start;
+}
+
+.board-col {
+  background: #f4f5f6;
+  border-radius: 0.8rem;
+  padding: 0.9rem;
+  min-height: 12rem;
+}
+
+.board-col-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.3rem 0.4rem 0.9rem;
+}
+
+.board-col-title {
+  font-family: "Courier New", monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #4b5563;
+}
+
+.board-col-head-progreso .board-col-title {
+  color: #b45309;
+}
+
+.board-col-head-done .board-col-title {
+  color: #1a9d4b;
+}
+
+.board-col-count {
+  font-family: "Courier New", monospace;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #fff;
+  background: #9aa0a8;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.4rem;
+}
+
+.board-col-head-progreso .board-col-count {
+  background: #b45309;
+}
+
+.board-col-head-done .board-col-count {
+  background: #1a9d4b;
+}
+
+.board-col-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.board-empty {
+  padding: 1.6rem 0.8rem;
+  text-align: center;
+  font-size: 0.82rem;
+  color: #9aa0a8;
+  border: 1px dashed #d7dce2;
+  border-radius: 0.6rem;
+}
+
+/* ---------- job card (unificada: sirve para urgente, normal, en progreso y entregada) ---------- */
+
+.job-card {
+  background: #fff;
+  border: 1px solid #ececec;
+  border-left: 4px solid #d7dce2;
+  border-radius: 0.6rem;
+  padding: 1rem 1.1rem 1.1rem;
+  transition: opacity 0.2s ease;
+}
+
+.job-card.priority-urgent,
+.job-card.priority-critico {
+  border-left-color: #e5484d;
+}
+
+.job-card.status-progreso {
+  border-left-color: #b45309;
+}
+
+.job-card.status-entregada {
+  border-left-color: #1a9d4b;
+  opacity: 0.75;
+}
+
+.job-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-bottom: 0.6rem;
+}
+
+.job-order-chip {
+  font-family: "Courier New", monospace;
+  font-size: 0.72rem;
+  color: #6b7280;
+  background: #f4f5f6;
+  padding: 0.18rem 0.45rem;
+  border-radius: 0.3rem;
+}
+
+.job-flag {
+  font-family: "Courier New", monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #e5484d;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.job-flag .dot {
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 50%;
+  background: currentColor;
+  animation: pulse-flag 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse-flag {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.job-flag.is-progress {
+  color: #b45309;
+}
+
+.job-flag.is-done {
+  color: #1a9d4b;
+}
+
+.job-card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.job-card .falla {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  font-size: 0.83rem;
+  color: #4b5563;
+  margin-bottom: 0.9rem;
+  line-height: 1.4;
+}
+
+.job-card .falla svg {
+  width: 0.95rem;
+  height: 0.95rem;
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+  color: #9aa0a8;
+}
+
+.job-card-foot {
+  padding-top: 0.8rem;
+  border-top: 1px solid #f2f3f5;
+}
+
+.job-date {
+  display: block;
+  font-family: "Courier New", monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #9aa0a8;
+  margin-bottom: 0.6rem;
+}
+
+.start-btn {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border: none;
+  border-radius: 0.4rem;
+  padding: 0.6rem 0.7rem;
+  background: #14161a;
+  color: #fff;
+  font-size: 0.83rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.start-btn:hover {
+  background: #b80f22;
+}
+
+.start-btn svg {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+.job-card.status-progreso .start-btn {
+  background: #b45309;
+}
+
+.job-card.status-progreso .start-btn:hover {
+  background: #14161a;
+}
+
+.job-card.status-entregada .start-btn {
+  background: #eef8f0;
+  color: #1a9d4b;
+  cursor: default;
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 1000px) {
+  .board {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================
+   MODAL: ENTREGA Y FINALIZACIÓN
+   ========================================================== */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 22, 26, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 200;
+}
+
+.modal-overlay[hidden] {
+  display: none;
+}
+
+.modal-dialog {
+  width: 100%;
+  max-width: 44rem;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 0.9rem;
+  box-shadow: 0 30px 60px rgba(16, 24, 40, 0.25);
+}
+
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.3rem 1.6rem;
+  border-bottom: 1px solid #ececec;
+}
+
+.modal-head-title {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.modal-head-title svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.modal-head-title h2 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.modal-order-id {
+  font-family: "Courier New", monospace;
+  font-size: 0.78rem;
+  color: #9aa0a8;
+}
+
+.modal-close {
+  width: 2.2rem;
+  height: 2.2rem;
+  border: none;
+  background: transparent;
+  border-radius: 0.4rem;
+  color: #6b7280;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close:hover {
+  background: #f4f5f6;
+  color: #14161a;
+}
+
+.modal-close svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.modal-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  padding: 1.4rem 1.6rem;
+}
+
+.modal-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.modal-block {
+  background: #f9fafb;
+  border: 1px solid #ececec;
+  border-radius: 0.6rem;
+  padding: 1.1rem 1.2rem;
+}
+
+.modal-block-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.9rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.modal-block-title svg {
+  width: 1.05rem;
+  height: 1.05rem;
+  color: #6b7280;
+}
+
+/* dropzone de la foto de entrega */
+.modal-dropzone {
+  position: relative;
+  border: 2px dashed #d7dce2;
+  border-radius: 0.5rem;
+  min-height: 10rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1.2rem;
+  cursor: pointer;
+  background: #fff;
+  transition: border-color 0.15s ease, background 0.15s ease;
+  overflow: hidden;
+}
+
+.modal-dropzone:hover,
+.modal-dropzone:focus-visible,
+.modal-dropzone.drag-over {
+  border-color: #b80f22;
+  background: #fdf3f3;
+}
+
+.modal-dropzone-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  color: #6b7280;
+}
+
+.modal-dropzone-empty svg {
+  width: 1.7rem;
+  height: 1.7rem;
+  color: #9aa0a8;
+}
+
+.modal-dropzone-empty strong {
+  font-size: 0.92rem;
+  color: #14161a;
+}
+
+.modal-dropzone-empty em {
+  font-size: 0.78rem;
+  font-style: italic;
+}
+
+.modal-dropzone-preview {
+  width: 100%;
+  height: 100%;
+  min-height: 10rem;
+  object-fit: cover;
+  border-radius: 0.4rem;
+}
+
+.modal-dropzone-remove {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  border: none;
+  background: rgba(20, 22, 26, 0.75);
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+/* detalles del cobro */
+.cobro-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid #ececec;
+  font-size: 0.9rem;
+}
+
+.cobro-row:last-child {
+  border-bottom: none;
+}
+
+.cobro-chip {
+  background: #e6f0ff;
+  color: #1d4ed8;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  border-radius: 0.35rem;
+}
+
+.cobro-total {
+  padding-top: 0.9rem;
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+/* facturación y garantía */
+.qr-wrap {
+  position: relative;
+  width: 8.5rem;
+  margin: 0 auto 1rem;
+}
+
+.qr-box {
+  width: 8.5rem;
+  height: 8.5rem;
+  border-radius: 0.6rem;
+  background: #1c1f26;
+  padding: 0.7rem;
+  box-shadow: 0 6px 16px rgba(16, 24, 40, 0.15);
+}
+
+.qr-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.qr-svg rect {
+  fill: #f5f6f8;
+}
+
+.qr-badge {
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem;
+  width: 1.9rem;
+  height: 1.9rem;
+  border-radius: 50%;
+  background: #e5820a;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(229, 130, 10, 0.4);
+}
+
+.qr-badge svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.qr-heading {
+  text-align: center;
+  margin: 0 0 0.4rem;
+  font-weight: 800;
+  font-size: 1rem;
+}
+
+.qr-text {
+  text-align: center;
+  margin: 0 0 0.9rem;
+  font-size: 0.85rem;
+  color: #6b7280;
+  line-height: 1.5;
+}
+
+.qr-chip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  color: #6b7280;
+  background: #fff;
+  border: 1px solid #ececec;
+  border-radius: 0.4rem;
+  padding: 0.5rem 0.7rem;
+}
+
+.qr-chip svg {
+  width: 0.95rem;
+  height: 0.95rem;
+  color: #9aa0a8;
+}
+
+.modal-divider {
+  height: 1px;
+  background: #ececec;
+  margin: 1rem 0;
+}
+
+.firma-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  font-size: 0.86rem;
+  cursor: pointer;
+  position: relative;
+}
+
+.firma-check input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.firma-check .check-box {
+  width: 1.15rem;
+  height: 1.15rem;
+  border: 2px solid #d7dce2;
+  border-radius: 0.3rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+  position: relative;
+  background: #fff;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.firma-check input:checked + .check-box {
+  background: #14161a;
+  border-color: #14161a;
+}
+
+.firma-check input:checked + .check-box::after {
+  content: "";
+  position: absolute;
+  left: 0.3rem;
+  top: 0.08rem;
+  width: 0.3rem;
+  height: 0.58rem;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* banner informativo */
+.modal-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin: 0 1.6rem 1.4rem;
+  padding: 0.8rem 1rem;
+  background: #f4f5f6;
+  border-left: 3px solid #14161a;
+  border-radius: 0.4rem;
+  font-size: 0.85rem;
+  color: #4b5563;
+}
+
+.modal-info svg {
+  width: 1.05rem;
+  height: 1.05rem;
+  flex-shrink: 0;
+  margin-top: 0.05rem;
+  color: #14161a;
+}
+
+/* pie del modal */
+.modal-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 1.6rem;
+  border-top: 1px solid #ececec;
+  background: #f9fafb;
+  border-radius: 0 0 0.9rem 0.9rem;
+}
+
+.modal-cancel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: none;
+  background: transparent;
+  color: #4b5563;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0.6rem 0.4rem;
+}
+
+.modal-cancel:hover {
+  color: #14161a;
+}
+
+.modal-cancel svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.modal-confirm {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.85rem 1.3rem;
+  background: #14161a;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.modal-confirm:hover {
+  background: #b80f22;
+}
+
+.modal-confirm:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.modal-confirm svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.modal-confirm-spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin-modal 0.7s linear infinite;
+}
+
+@keyframes spin-modal {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 700px) {
+  .modal-body {
+    grid-template-columns: 1fr;
+  }
+  .modal-foot {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+  .modal-confirm,
+  .modal-cancel {
+    justify-content: center;
+  }
+}
+

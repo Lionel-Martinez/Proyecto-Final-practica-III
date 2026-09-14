@@ -1,0 +1,316 @@
+/* Se carga después de "menu principal.css". */
+
+.breadcrumb {
+  margin: 0 0 0.6rem;
+  font-family: "Courier New", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #9aa0a8;
+}
+
+.breadcrumb a {
+  color: #9aa0a8;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  color: #14161a;
+}
+
+.breadcrumb strong {
+  color: #14161a;
+}
+
+/* ---------- grilla de settings ---------- */
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.1rem;
+  align-items: start;
+}
+
+.admin-card {
+  background: #fff;
+  border: 1px solid #ececec;
+  border-radius: 0.7rem;
+  padding: 1.4rem 1.5rem;
+}
+
+.card-title {
+  margin: 0 0 0.25rem;
+  font-size: 1.02rem;
+  font-weight: 800;
+}
+
+.card-subtitle {
+  margin: 0 0 1.3rem;
+  font-size: 0.82rem;
+  color: #8b8f97;
+}
+
+.card-head-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* ---------- formulario del taller ---------- */
+
+.field {
+  margin-bottom: 1.1rem;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+input[type="text"] {
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid #e4e6ea;
+  background: transparent;
+  padding: 0.5rem 0.1rem;
+  font-size: 0.92rem;
+  font-family: inherit;
+  color: #14161a;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+input[type="text"]:focus {
+  border-color: #b80f22;
+}
+
+input::placeholder {
+  color: #b3b8bf;
+}
+
+.btn-solid {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 2.7rem;
+  padding: 0 1.2rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: #14161a;
+  color: #fff;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s ease;
+}
+
+.btn-solid:hover {
+  background: #b80f22;
+}
+
+.btn-solid svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.save-confirm {
+  margin-left: 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #1a9d4b;
+}
+
+/* ---------- lista de usuarios ---------- */
+
+.user-list {
+  list-style: none;
+  margin: 0 0 1.2rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.user-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.6rem 0.7rem;
+  border-radius: 0.5rem;
+  background: #f9fafb;
+}
+
+.user-avatar {
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #14161a;
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-name {
+  flex: 1;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.user-rol-pill {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+}
+
+.rol-admin { background: #14161a; color: #fff; }
+.rol-tecnico { background: #e6f0ff; color: #1d4ed8; }
+.rol-recepcion { background: #fdeee2; color: #b45309; }
+
+.user-remove {
+  width: 1.7rem;
+  height: 1.7rem;
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  border-radius: 0.4rem;
+  color: #9aa0a8;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+}
+
+.user-remove:hover {
+  background: #fdecee;
+  color: #b80f22;
+}
+
+.user-form {
+  display: flex;
+  gap: 0.6rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid #ececec;
+}
+
+.user-form input[type="text"] {
+  flex: 1;
+  border: 1px solid #e4e6ea;
+  border-radius: 0.4rem;
+  padding: 0.55rem 0.7rem;
+}
+
+.user-form input[type="text"]:focus {
+  border-color: #b80f22;
+}
+
+.user-form select {
+  border: 1px solid #e4e6ea;
+  border-radius: 0.4rem;
+  padding: 0.55rem 0.5rem;
+  font-family: inherit;
+  font-size: 0.85rem;
+  color: #14161a;
+  background: #fff;
+}
+
+.btn-add-user {
+  flex-shrink: 0;
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 900px) {
+  .admin-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- sección "otras configuraciones" ---------- */
+
+.admin-card-wide {
+  grid-column: 1 / -1;
+}
+
+.admin-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.admin-link {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  background: #f9fafb;
+  border: 1px solid #ececec;
+  border-left: 3px solid transparent;
+  border-radius: 0.6rem;
+  padding: 0.9rem 1.1rem;
+  text-decoration: none;
+  color: #14161a;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.admin-link:hover {
+  border-left-color: #b80f22;
+  transform: translateX(3px);
+}
+
+.admin-link-icon {
+  width: 2.4rem;
+  height: 2.4rem;
+  flex-shrink: 0;
+  border-radius: 0.5rem;
+  background: #fff;
+  color: #14161a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-link-icon svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.admin-link strong {
+  display: block;
+  font-size: 0.9rem;
+}
+
+.admin-link span span {
+  font-family: "Courier New", monospace;
+  font-size: 0.74rem;
+  color: #8b8f97;
+}
+
+.admin-link-arrow {
+  width: 1rem;
+  height: 1rem;
+  margin-left: auto;
+  color: #b3b8bf;
+  flex-shrink: 0;
+}
+
+@media (max-width: 700px) {
+  .admin-links {
+    grid-template-columns: 1fr;
+  }
+}

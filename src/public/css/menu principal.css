@@ -1,0 +1,660 @@
+/* reset */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* body */
+body{
+  width: 100%;
+  min-height: 100vh;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background-color: #f5f6f8;
+}
+
+/* header */
+header{
+  z-index: 200;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.4rem 2rem 0.45rem 1.27rem;
+  position: fixed;
+  background-color: white;
+  border-bottom: 1px solid #eaeaea;
+  top: 0;
+  left: 0;
+}
+
+/* left section */
+.izquierda{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.4rem;
+}
+
+/* menu (hamburguesa) */
+.menu-container{
+  height: 100%;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.menu{
+  width: 1.5rem;
+  height: 0.95rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+
+.menu div{
+  width: 100%;
+  height: 0.15rem;
+  background-color: black;
+  border-radius: 1rem;
+  transform-origin: center;
+  transition: transform 0.3s ease, opacity 0.3s ease, width 0.3s ease;
+}
+
+/* estado abierto: la hamburguesa se transforma en una X */
+.menu.menu-toggle div:first-child{
+  transform: translateY(0.4rem) rotate(45deg);
+}
+
+.menu.menu-toggle div:nth-child(2){
+  opacity: 0;
+}
+
+.menu.menu-toggle div:last-child{
+  transform: translateY(-0.4rem) rotate(-45deg);
+}
+
+/* brand */
+.brand{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+}
+.brand .logo{
+  width: 1.7rem;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.brand .name{
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: grey;
+}
+
+/* right section */
+.derecha{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.6rem;
+}
+
+/* selector de rol (solo pruebas mientras no hay login/backend real) */
+.role-switcher{
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.5rem;
+  border: 1px dashed #cfd3d9;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.role-switcher-tag{
+  font-family: "Courier New", monospace;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #8b8f97;
+}
+
+.role-switcher select{
+  border: none;
+  background: transparent;
+  font-size: 0.82rem;
+  color: #14161a;
+  cursor: pointer;
+}
+
+/* usuario + badge de rol */
+.user-block{
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.role-badge{
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background-color: #ececec;
+  color: #444;
+  white-space: nowrap;
+}
+
+.role-badge.role-admin{ background-color: #14161a; color: #fff; }
+.role-badge.role-tecnico{ background-color: #e6f0ff; color: #1d4ed8; }
+.role-badge.role-recepcion{ background-color: #fdeee2; color: #b45309; }
+
+.derecha .icons-header{
+  display: flex;
+  align-items: center;
+  padding: 0.4rem;
+  border-radius: 0.5rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.2s ease;
+}
+
+.derecha .icons-header:hover{
+  background-color: #ececec;
+}
+
+.derecha img{
+  width: 1.5rem;
+  margin: 0.5rem;
+}
+.derecha .user{
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0;
+}
+
+/* ---------- puntito de la campanita (el detalle vive en Notificaciones.html) ---------- */
+
+.notif-dot{
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: #b80f22;
+  border: 2px solid #fff;
+}
+
+/* sidebar */
+.sidebar{
+  margin-top: 4rem;
+  width: 4rem;
+  height: calc(100vh - 4rem);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  padding: 1.1rem 0;
+  background-color: white;
+  border-right: 1px solid #eaeaea;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: width 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar.menu-toggle{
+  width: 18.75rem;
+}
+
+.sidebar nav{
+  flex: 1;
+}
+
+.sidebar a{
+  display: flex;
+  align-items: center;
+  gap: 1.3rem;
+  padding: 0.9rem 0.7rem;
+  text-decoration: none;
+  margin: 0 0.5rem;
+  border-radius: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  color: grey;
+}
+
+.sidebar a:hover{
+  background-color: #ececec;
+}
+
+.sidebar a.selected{
+  color: black;
+  background-color: lightgrey;
+}
+
+.sidebar nav svg{
+  width: 1.6rem;
+  height: 1.6rem;
+  flex-shrink: 0;
+}
+
+/* bloque inferior: New Repair + Settings + Support */
+.sidebar-foot{
+  margin-top: auto;
+  padding-top: 0.6rem;
+  border-top: 1px solid #eaeaea;
+}
+
+.sidebar .new-repair-btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  height: 2.8rem;
+  margin: 0.4rem 0.5rem 0.6rem;
+  padding: 0;
+  border-radius: 0.5rem;
+  background-color: #14161a;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.92rem;
+  transition: background-color 0.15s ease;
+}
+
+.sidebar .new-repair-btn:hover{
+  background-color: #b80f22;
+}
+
+.sidebar .new-repair-btn svg,
+.sidebar .foot-link svg{
+  width: 1.15rem;
+  height: 1.15rem;
+  flex-shrink: 0;
+}
+
+
+/* main */
+
+main{
+  margin-top: 4rem;
+  margin-left: 4rem;
+  padding: 2rem 2.5rem 3rem;
+  transition: margin-left 0.3s ease;
+}
+
+main.menu-toggle{
+  margin-left: 18.75rem;
+}
+
+/* páginas sin sidebar (por ahora, el launcher/menú principal):
+   los accesos directos del propio contenido hacen de navegación,
+   así que el main ocupa todo el ancho disponible. */
+main.main-full{
+  margin-left: 0;
+}
+
+/* launcher header */
+.launcher-head{
+  margin-bottom: 1.4rem;
+}
+
+.launcher-eyebrow{
+  margin: 0 0 0.3rem;
+  font-family: "Courier New", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #b80f22;
+  font-weight: 700;
+}
+
+.launcher-head h1{
+  font-size: 2rem;
+  font-weight: 800;
+  color: #14161a;
+  margin-bottom: 0.4rem;
+}
+
+.launcher-head p{
+  color: #6b7280;
+  font-size: 1rem;
+}
+
+/* ---------- layout general: main + aside fija ---------- */
+.launcher-layout{
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 19rem;
+  gap: 1.6rem;
+  align-items: start;
+}
+
+.launcher-main{
+  min-width: 0;
+}
+
+/* banner de acción principal (reemplaza la card grande de la grilla) */
+.cta-banner{
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  background-color: #14161a;
+  border-radius: 0.8rem;
+  padding: 1.3rem 1.5rem;
+  text-decoration: none;
+  color: #fff;
+  margin-bottom: 1.6rem;
+  transition: background-color 0.15s ease;
+}
+
+.cta-banner:hover{
+  background-color: #b80f22;
+}
+
+.cta-icon{
+  width: 2.9rem;
+  height: 2.9rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.12);
+  border-radius: 0.6rem;
+}
+
+.cta-icon svg{
+  width: 1.4rem;
+  height: 1.4rem;
+}
+
+.cta-text{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.cta-text strong{
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.cta-text span{
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.cta-arrow{
+  width: 1.2rem;
+  height: 1.2rem;
+  flex-shrink: 0;
+}
+
+/* lista de accesos (reemplaza la grilla de cards) */
+.access-heading{
+  margin: 0 0 0.7rem;
+  font-family: "Courier New", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #8b8f97;
+  font-weight: 700;
+}
+
+.access-list{
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.access-row{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: #fff;
+  border: 1px solid #ececec;
+  border-left: 3px solid #ececec;
+  border-radius: 0.6rem;
+  padding: 0.9rem 1.1rem;
+  text-decoration: none;
+  color: #14161a;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.access-row:hover{
+  border-left-color: #b80f22;
+  border-color: #ececec;
+  transform: translateX(3px);
+}
+
+.access-icon{
+  width: 2.5rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem;
+  border-radius: 0.5rem;
+  background-color: #f4f5f6;
+  color: #14161a;
+  box-sizing: border-box;
+}
+
+.access-icon svg{
+  width: 100%;
+  height: 100%;
+}
+
+.access-icon-alert{
+  background-color: #fdecee;
+  color: #b80f22;
+}
+
+.access-text{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.access-text strong{
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.access-text span{
+  font-family: "Courier New", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #8b8f97;
+}
+
+.access-badge{
+  font-family: "Courier New", monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #b80f22;
+  background-color: #fdecee;
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.access-arrow{
+  width: 1.1rem;
+  height: 1.1rem;
+  color: #b3b8bf;
+  flex-shrink: 0;
+}
+
+.empty-state{
+  margin-top: 1.5rem;
+  padding: 2rem;
+  text-align: center;
+  color: #8b8f97;
+  border: 1px dashed #dcdfe4;
+  border-radius: 1rem;
+}
+
+/* ---------- panel lateral fijo ---------- */
+.launcher-aside{
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  position: sticky;
+  top: 1.5rem;
+}
+
+.aside-card{
+  background-color: #fff;
+  border: 1px solid #ececec;
+  border-radius: 0.7rem;
+  padding: 1.3rem 1.4rem;
+}
+
+.aside-title{
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1rem;
+  font-family: "Courier New", monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #8b8f97;
+  font-weight: 700;
+}
+
+.stat-list{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-list li{
+  border-bottom: 1px solid #f2f3f5;
+}
+
+.stat-list li:last-child{
+  border-bottom: none;
+}
+
+.stat-list a{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 0.1rem;
+  text-decoration: none;
+  color: #14161a;
+  font-size: 0.88rem;
+}
+
+.stat-list a:hover span{
+  color: #b80f22;
+}
+
+.stat-list strong{
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.stat-red{
+  color: #b80f22;
+}
+
+.stat-green{
+  color: #1a9d4b;
+}
+
+/* consola de actividad reciente */
+.console-card{
+  background-color: #14161a;
+  border-color: #14161a;
+}
+
+.console-card .aside-title{
+  color: #8b90a0;
+}
+
+.console-dot{
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: #3ddc84;
+  box-shadow: 0 0 0 0 rgba(61, 220, 132, 0.5);
+  animation: pulse-console 2s ease-in-out infinite;
+}
+
+@keyframes pulse-console{
+  0% { box-shadow: 0 0 0 0 rgba(61, 220, 132, 0.45); }
+  70% { box-shadow: 0 0 0 6px rgba(61, 220, 132, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(61, 220, 132, 0); }
+}
+
+.activity-feed{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  font-family: "Courier New", monospace;
+  font-size: 0.78rem;
+  color: #d7dce2;
+  line-height: 1.5;
+}
+
+.activity-time{
+  color: #6b7280;
+  margin-right: 0.5rem;
+}
+
+
+/* responsive */
+
+@media (max-width: 960px){
+  .launcher-layout{
+    grid-template-columns: 1fr;
+  }
+  .launcher-aside{
+    position: static;
+  }
+}
+
+@media (max-width: 500px){
+  .derecha .icons-header{
+    display: none;
+  }
+  .sidebar{
+    width: 0;
+  }
+  .sidebar.menu-toggle{
+    width: 18.75rem;
+  }
+  main{
+    margin-left: 0;
+  }
+  main.menu-toggle{
+    margin-left: 0;
+  }
+  .cta-banner{
+    flex-wrap: wrap;
+  }
+  .cta-arrow{
+    display: none;
+  }
+}

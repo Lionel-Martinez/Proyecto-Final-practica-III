@@ -1,0 +1,526 @@
+/* Se carga después de "menu principal.css". */
+
+.breadcrumb {
+  margin: 0 0 0.6rem;
+  font-family: "Courier New", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #9aa0a8;
+}
+
+.breadcrumb a {
+  color: #9aa0a8;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  color: #14161a;
+}
+
+.breadcrumb strong {
+  color: #14161a;
+}
+
+/* ---------- toolbar ---------- */
+
+.prov-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 1.4rem;
+  flex-wrap: wrap;
+}
+
+.inv-search {
+  flex: 1;
+  min-width: 14rem;
+  max-width: 24rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #fff;
+  border: 1px solid #e4e6ea;
+  border-radius: 0.5rem;
+  padding: 0 0.9rem;
+  height: 2.8rem;
+}
+
+.inv-search:focus-within {
+  border-color: #b80f22;
+}
+
+.inv-search svg {
+  width: 1.05rem;
+  height: 1.05rem;
+  color: #9aa0a8;
+  flex-shrink: 0;
+}
+
+.inv-search input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 0.9rem;
+  color: #14161a;
+}
+
+.inv-search input::placeholder {
+  color: #b3b8bf;
+}
+
+.btn-solid,
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 2.8rem;
+  padding: 0 1.1rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-solid {
+  border: none;
+  background: #14161a;
+  color: #fff;
+  transition: background 0.15s ease;
+}
+
+.btn-solid:hover {
+  background: #b80f22;
+}
+
+.btn-ghost {
+  border: 1px solid #d7dce2;
+  background: #fff;
+  color: #14161a;
+}
+
+.btn-ghost:hover {
+  border-color: #b3b8bf;
+}
+
+.btn-solid svg,
+.btn-ghost svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* ---------- grilla de proveedores ---------- */
+
+.prov-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.prov-card {
+  position: relative;
+  background: #fff;
+  border: 1px solid #ececec;
+  border-left: 3px solid #14161a;
+  border-radius: 0.6rem;
+  padding: 1.1rem 1.2rem;
+}
+
+.prov-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-bottom: 0.7rem;
+}
+
+.prov-nombre {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.prov-categoria {
+  display: inline-block;
+  margin-top: 0.3rem;
+  font-family: "Courier New", monospace;
+  font-size: 0.72rem;
+  color: #6b7280;
+  background: #f4f5f6;
+  padding: 0.15rem 0.5rem;
+  border-radius: 0.3rem;
+}
+
+.prov-menu-btn {
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  border-radius: 0.4rem;
+  color: #9aa0a8;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.prov-menu-btn:hover {
+  background: #f4f5f6;
+  color: #14161a;
+}
+
+.prov-menu-btn svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.prov-menu {
+  position: absolute;
+  right: 1.1rem;
+  top: 2.8rem;
+  min-width: 8.5rem;
+  background: #fff;
+  border: 1px solid #ececec;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 24px rgba(16, 24, 40, 0.1);
+  list-style: none;
+  margin: 0;
+  padding: 0.4rem;
+  z-index: 20;
+}
+
+.prov-menu li {
+  padding: 0.5rem 0.6rem;
+  border-radius: 0.4rem;
+  font-size: 0.84rem;
+  cursor: pointer;
+  color: #14161a;
+}
+
+.prov-menu li:hover {
+  background: #f4f5f6;
+}
+
+.prov-menu li.danger {
+  color: #b80f22;
+}
+
+.prov-detail {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.84rem;
+  color: #4b5563;
+  margin-bottom: 0.35rem;
+}
+
+.prov-detail svg {
+  width: 0.95rem;
+  height: 0.95rem;
+  color: #9aa0a8;
+  flex-shrink: 0;
+}
+
+.prov-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #1a9d4b;
+  text-decoration: none;
+}
+
+.prov-whatsapp:hover {
+  text-decoration: underline;
+}
+
+.prov-whatsapp svg {
+  width: 0.95rem;
+  height: 0.95rem;
+}
+
+.prov-empty {
+  grid-column: 1 / -1;
+  padding: 2.5rem;
+  text-align: center;
+  color: #8b8f97;
+  border: 1px dashed #dcdfe4;
+  border-radius: 0.7rem;
+}
+
+/* ---------- modal (alta de proveedor) ---------- */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 22, 26, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 200;
+}
+
+.modal-overlay[hidden] {
+  display: none;
+}
+
+.modal-dialog {
+  width: 100%;
+  max-width: 28rem;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 0.9rem;
+  box-shadow: 0 30px 60px rgba(16, 24, 40, 0.25);
+}
+
+.modal-dialog-wide {
+  max-width: 34rem;
+}
+
+.modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 1.4rem;
+  border-bottom: 1px solid #ececec;
+}
+
+.modal-head h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.modal-close {
+  width: 2.2rem;
+  height: 2.2rem;
+  border: none;
+  background: transparent;
+  border-radius: 0.4rem;
+  color: #6b7280;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close:hover {
+  background: #f4f5f6;
+  color: #14161a;
+}
+
+.modal-close svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.modal-body {
+  padding: 1.3rem 1.4rem;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.field {
+  margin-bottom: 1.1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+input[type="text"] {
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid #e4e6ea;
+  background: transparent;
+  padding: 0.5rem 0.1rem;
+  font-size: 0.92rem;
+  font-family: inherit;
+  color: #14161a;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+input[type="text"]:focus {
+  border-color: #b80f22;
+}
+
+input::placeholder {
+  color: #b3b8bf;
+}
+
+.field.has-error input {
+  border-color: #e5484d;
+}
+
+.field-error {
+  display: none;
+  margin-top: 0.35rem;
+  font-size: 0.76rem;
+  color: #e5484d;
+}
+
+.field.has-error .field-error {
+  display: block;
+}
+
+.modal-foot {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.8rem;
+  margin-top: 1.2rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid #ececec;
+}
+
+/* ---------- modal de pedido de reposición ---------- */
+
+.pedido-lead {
+  margin: 0 0 1.2rem;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.pedido-empty {
+  padding: 2rem;
+  text-align: center;
+  color: #1a9d4b;
+  font-weight: 700;
+}
+
+.pedido-grupo {
+  background: #f9fafb;
+  border: 1px solid #ececec;
+  border-radius: 0.6rem;
+  padding: 1.1rem 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.pedido-grupo:last-child {
+  margin-bottom: 0;
+}
+
+.pedido-grupo-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.6rem;
+}
+
+.pedido-grupo-head strong {
+  font-size: 0.92rem;
+}
+
+.pedido-items {
+  list-style: none;
+  margin: 0 0 0.8rem;
+  padding: 0;
+  font-size: 0.84rem;
+  color: #374151;
+}
+
+.pedido-items li {
+  padding: 0.25rem 0;
+}
+
+.pedido-textarea {
+  width: 100%;
+  min-height: 4.5rem;
+  border: 1px solid #e4e6ea;
+  border-radius: 0.4rem;
+  padding: 0.6rem 0.7rem;
+  font-family: inherit;
+  font-size: 0.82rem;
+  color: #14161a;
+  resize: vertical;
+  margin-bottom: 0.7rem;
+}
+
+.pedido-actions {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.pedido-copy,
+.pedido-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: none;
+  border-radius: 0.4rem;
+  padding: 0.5rem 0.8rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.pedido-copy {
+  background: #ececec;
+  color: #14161a;
+}
+
+.pedido-copy:hover {
+  background: #dcdfe4;
+}
+
+.pedido-whatsapp {
+  background: #1a9d4b;
+  color: #fff;
+}
+
+.pedido-whatsapp:hover {
+  background: #158040;
+}
+
+.pedido-copy svg,
+.pedido-whatsapp svg {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+.pedido-sin-proveedor {
+  font-size: 0.76rem;
+  color: #b45309;
+  margin: 0.4rem 0 0;
+}
+
+.servicio-categoria-tag {
+  font-family: "Courier New", monospace;
+  font-size: 0.76rem;
+  color: #6b7280;
+  background: #ececec;
+  padding: 0.15rem 0.5rem;
+  border-radius: 0.3rem;
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 1000px) {
+  .prov-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .prov-grid {
+    grid-template-columns: 1fr;
+  }
+  .field-row {
+    grid-template-columns: 1fr;
+  }
+}

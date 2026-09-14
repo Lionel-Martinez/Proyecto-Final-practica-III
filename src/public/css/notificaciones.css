@@ -1,0 +1,197 @@
+/* Se carga después de "menu principal.css". */
+
+.breadcrumb {
+  margin: 0 0 0.6rem;
+  font-family: "Courier New", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #9aa0a8;
+}
+
+.breadcrumb a {
+  color: #9aa0a8;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  color: #14161a;
+}
+
+.breadcrumb strong {
+  color: #14161a;
+}
+
+/* ---------- toolbar ---------- */
+
+.notif-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.3rem;
+  flex-wrap: wrap;
+}
+
+.notif-filter {
+  display: flex;
+  background: #f4f5f6;
+  border-radius: 0.5rem;
+  padding: 0.25rem;
+  gap: 0.2rem;
+}
+
+.notif-chip {
+  border: none;
+  background: transparent;
+  padding: 0.5rem 0.9rem;
+  border-radius: 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #6b7280;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.notif-chip.active {
+  background: #fff;
+  color: #14161a;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.08);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 2.6rem;
+  padding: 0 1rem;
+  border: 1px solid #d7dce2;
+  border-radius: 0.5rem;
+  background: #fff;
+  color: #14161a;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-ghost:hover {
+  border-color: #b3b8bf;
+}
+
+.btn-ghost svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+/* ---------- tarjetas de notificación ---------- */
+
+.notif-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: #fff;
+  border: 1px solid #ececec;
+  border-left: 3px solid #d7dce2;
+  border-radius: 0.6rem;
+  padding: 1rem 1.2rem;
+  margin-bottom: 0.7rem;
+  text-decoration: none;
+  color: #14161a;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.notif-card:hover {
+  transform: translateX(3px);
+}
+
+.notif-card.tipo-urgente {
+  border-left-color: #b80f22;
+}
+
+.notif-card.tipo-stock {
+  border-left-color: #b45309;
+}
+
+.notif-card.tipo-saldo {
+  border-left-color: #b45309;
+}
+
+.notif-card-icon {
+  width: 2.4rem;
+  height: 2.4rem;
+  flex-shrink: 0;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notif-card-icon svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.notif-card.tipo-urgente .notif-card-icon { background: #fdecee; color: #b80f22; }
+.notif-card.tipo-stock .notif-card-icon { background: #fdf3e2; color: #b45309; }
+.notif-card.tipo-saldo .notif-card-icon { background: #fdf3e2; color: #b45309; }
+
+.notif-card-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.notif-card-text strong {
+  display: block;
+  font-size: 0.92rem;
+}
+
+.notif-card-text span {
+  display: block;
+  font-size: 0.82rem;
+  color: #8b8f97;
+  margin-top: 0.15rem;
+}
+
+.notif-card-tag {
+  flex-shrink: 0;
+  font-family: "Courier New", monospace;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.notif-card.tipo-urgente .notif-card-tag { background: #fdecee; color: #b80f22; }
+.notif-card.tipo-stock .notif-card-tag { background: #fdf3e2; color: #b45309; }
+.notif-card.tipo-saldo .notif-card-tag { background: #fdf3e2; color: #b45309; }
+
+/* ---------- estado vacío ---------- */
+
+.notif-empty-state {
+  padding: 3rem;
+  text-align: center;
+  color: #6b7280;
+  border: 1px dashed #dcdfe4;
+  border-radius: 0.7rem;
+}
+
+.notif-empty-state strong {
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: 1rem;
+  color: #1a9d4b;
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 560px) {
+  .notif-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .notif-card {
+    flex-wrap: wrap;
+  }
+}

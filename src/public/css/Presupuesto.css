@@ -1,0 +1,255 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #eef0f3;
+  color: #14161a;
+}
+
+.wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.25rem;
+}
+
+.card {
+  width: 100%;
+  max-width: 30rem;
+  background: #fff;
+  border-radius: 0.9rem;
+  box-shadow: 0 24px 48px rgba(20, 22, 26, 0.14);
+  padding: 2rem 2.1rem;
+}
+
+/* ---------- encabezado ---------- */
+
+.card-head {
+  text-align: center;
+  margin-bottom: 1.3rem;
+}
+
+.brand-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.brand-mark svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.brand-mark span {
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+.taller-sub {
+  margin: 0.3rem 0 0;
+  font-family: "Courier New", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8b8f97;
+}
+
+.doc-title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.4rem;
+}
+
+.doc-title {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #b80f22;
+}
+
+.doc-folio {
+  font-family: "Courier New", monospace;
+  font-size: 0.76rem;
+  color: #9aa0a8;
+}
+
+.rule {
+  height: 1px;
+  background: #ececec;
+  margin: 1.1rem 0;
+}
+
+/* ---------- datos ---------- */
+
+.row-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.row-label {
+  margin: 0 0 0.25rem;
+  font-family: "Courier New", monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #9aa0a8;
+}
+
+.row-value {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+/* ---------- tabla de items ---------- */
+
+.items-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.items-table th {
+  text-align: left;
+  font-family: "Courier New", monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #9aa0a8;
+  font-weight: 700;
+  padding: 0 0 0.5rem;
+  border-bottom: 1px solid #ececec;
+}
+
+.items-table th.num {
+  text-align: right;
+}
+
+.items-table td {
+  padding: 0.55rem 0;
+  border-bottom: 1px solid #f2f3f5;
+  font-size: 0.9rem;
+}
+
+.items-table td.num {
+  text-align: right;
+  font-family: "Courier New", monospace;
+  font-weight: 700;
+}
+
+.items-table .total-row td {
+  border-bottom: none;
+  border-top: 2px solid #14161a;
+  padding-top: 0.7rem;
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+/* ---------- nota y acciones ---------- */
+
+.nota {
+  margin: 1.2rem 0 0;
+  font-size: 0.78rem;
+  color: #8b8f97;
+  line-height: 1.5;
+}
+
+.actions {
+  display: flex;
+  gap: 0.7rem;
+  margin-top: 1.4rem;
+}
+
+.btn-ghost,
+.btn-whatsapp {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 2.9rem;
+  border-radius: 0.5rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-ghost {
+  border: 1px solid #d7dce2;
+  background: #fff;
+  color: #14161a;
+}
+
+.btn-ghost:hover {
+  border-color: #b3b8bf;
+}
+
+.btn-whatsapp {
+  border: none;
+  background: #1a9d4b;
+  color: #fff;
+}
+
+.btn-whatsapp:hover {
+  background: #158040;
+}
+
+.btn-ghost svg,
+.btn-whatsapp svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.footnote {
+  margin: 1.1rem 0 0;
+  text-align: center;
+  font-size: 0.82rem;
+}
+
+.footnote a {
+  color: #6b7280;
+  text-decoration: none;
+}
+
+.footnote a:hover {
+  color: #b80f22;
+}
+
+/* ---------- impresión ---------- */
+
+@media print {
+  body {
+    background: #fff;
+  }
+  .wrap {
+    padding: 0;
+  }
+  .card {
+    box-shadow: none;
+    max-width: none;
+  }
+  .no-print {
+    display: none;
+  }
+}
+
+@media (max-width: 420px) {
+  .card {
+    padding: 1.5rem 1.4rem;
+  }
+  .row-pair {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+  .actions {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,203 @@
+/* Se carga después de "menu principal.css". */
+
+.breadcrumb {
+  margin: 0 0 0.6rem;
+  font-family: "Courier New", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #9aa0a8;
+}
+
+.breadcrumb a {
+  color: #9aa0a8;
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  color: #14161a;
+}
+
+.breadcrumb strong {
+  color: #14161a;
+}
+
+/* ---------- layout ---------- */
+
+.ayuda-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 17rem;
+  gap: 1.4rem;
+  align-items: start;
+}
+
+.ayuda-kicker {
+  margin: 0 0 0.8rem;
+  font-family: "Courier New", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8b8f97;
+  font-weight: 700;
+}
+
+/* ---------- FAQ (accordion nativo <details>) ---------- */
+
+.faq-item {
+  background: #fff;
+  border: 1px solid #ececec;
+  border-radius: 0.6rem;
+  padding: 0.2rem 1.1rem;
+  margin-bottom: 0.6rem;
+}
+
+.faq-item summary {
+  padding: 0.9rem 0;
+  font-size: 0.94rem;
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary::after {
+  content: "+";
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #9aa0a8;
+  flex-shrink: 0;
+  margin-left: 1rem;
+}
+
+.faq-item[open] summary::after {
+  content: "–";
+}
+
+.faq-item[open] summary {
+  border-bottom: 1px solid #f2f3f5;
+}
+
+.faq-item p {
+  margin: 0.9rem 0 0.6rem;
+  font-size: 0.87rem;
+  color: #4b5563;
+  line-height: 1.55;
+}
+
+.faq-link {
+  display: inline-block;
+  margin-bottom: 0.9rem;
+  font-family: "Courier New", monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #b80f22;
+  text-decoration: none;
+}
+
+.faq-link:hover {
+  text-decoration: underline;
+}
+
+/* ---------- columna lateral ---------- */
+
+.ayuda-aside {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  position: sticky;
+  top: 1.5rem;
+}
+
+.soporte-card {
+  background: #14161a;
+  color: #fff;
+  border-radius: 0.7rem;
+  padding: 1.3rem 1.4rem;
+}
+
+.soporte-title {
+  margin: 0 0 0.3rem;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.soporte-text {
+  margin: 0 0 1rem;
+  font-size: 0.82rem;
+  color: #9aa0a8;
+}
+
+.btn-whatsapp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 2.8rem;
+  border-radius: 0.5rem;
+  background: #1a9d4b;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.86rem;
+  transition: background 0.15s ease;
+}
+
+.btn-whatsapp:hover {
+  background: #158040;
+}
+
+.btn-whatsapp svg {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.atajos-card {
+  background: #fff;
+  border: 1px solid #ececec;
+  border-radius: 0.7rem;
+  padding: 1.2rem 1.3rem;
+}
+
+.atajos-title {
+  margin: 0 0 0.7rem;
+  font-family: "Courier New", monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #8b8f97;
+  font-weight: 700;
+}
+
+.atajo-row {
+  display: block;
+  padding: 0.55rem 0.3rem;
+  border-bottom: 1px solid #f2f3f5;
+  font-size: 0.86rem;
+  color: #14161a;
+  text-decoration: none;
+}
+
+.atajo-row:last-child {
+  border-bottom: none;
+}
+
+.atajo-row:hover {
+  color: #b80f22;
+}
+
+/* ---------- responsive ---------- */
+
+@media (max-width: 1000px) {
+  .ayuda-grid {
+    grid-template-columns: 1fr;
+  }
+  .ayuda-aside {
+    position: static;
+  }
+}
