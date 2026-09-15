@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DeviceController;
+use App\Http\Controllers\PartController;
 use App\Http\Controllers\RepairOrderController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,6 +19,11 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/panel', fn () => view('dashboard'))->name('dashboard');
     Route::post('/logout', [AuthController::class, 'destroy'])->name('logout');
+
+    // Pantalla de repuestos
+    Route::get('/repuestos', function () {
+        return view('repuestos');
+    })->name('repuestos.index');
 
     // Pantalla de clientes
     Route::get('/clientes', function () {
@@ -61,5 +67,22 @@ Route::middleware('auth')->group(function () {
 
     Route::put('/{order}', [RepairOrderController::class, 'update'])
     ->name('api.ordenes.update');
-   });
+});
+   // API de repuestos
+Route::prefix('api/repuestos')->group(function () {
+    Route::get('/', [PartController::class, 'index'])
+        ->name('api.repuestos.index');
+
+    Route::post('/', [PartController::class, 'store'])
+        ->name('api.repuestos.store');
+
+    Route::get('/{part}', [PartController::class, 'show'])
+        ->name('api.repuestos.show');
+
+    Route::put('/{part}', [PartController::class, 'update'])
+        ->name('api.repuestos.update');
+
+    Route::delete('/{part}', [PartController::class, 'destroy'])
+        ->name('api.repuestos.destroy');
+});
 });

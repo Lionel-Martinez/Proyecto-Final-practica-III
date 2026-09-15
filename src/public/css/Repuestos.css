@@ -1,0 +1,106 @@
+/* =========================================================
+   REPUESTOS — Ulicel
+   ========================================================= */
+
+.repuestos-page {
+    width: min(1200px, calc(100% - 3rem));
+    margin: 0 auto;
+    padding: 3rem 0;
+}
+
+.page-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.page-eyebrow {
+    margin: 0 0 0.5rem;
+    font-family: "Courier New", monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #9aa0a8;
+}
+
+.page-header h1 {
+    margin: 0;
+}
+
+.page-header p:not(.page-eyebrow) {
+    margin: 0.5rem 0 0;
+}
+
+#add-part-btn {
+    border: 0;
+    border-radius: 8px;
+    padding: 0.8rem 1.1rem;
+    cursor: pointer;
+    font: inherit;
+}
+
+.parts-section {
+    width: 100%;
+}
+
+#parts-container {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.part-card {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 1.25rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+}
+
+.part-info h3 {
+    margin: 0 0 0.75rem;
+}
+
+.part-info p,
+.part-prices p {
+    margin: 0.35rem 0;
+}
+
+.part-prices {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.client-empty-section {
+    grid-column: 1 / -1;
+    padding: 2rem;
+    text-align: center;
+}
+
+@media (max-width: 800px) {
+
+    .repuestos-page {
+        width: min(100% - 2rem, 1200px);
+        padding: 2rem 0;
+    }
+
+    .page-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    #parts-container {
+        grid-template-columns: 1fr;
+    }
+
+    .part-card {
+        flex-direction: column;
+    }
+
+    .part-prices {
+        text-align: left;
+    }
+}
