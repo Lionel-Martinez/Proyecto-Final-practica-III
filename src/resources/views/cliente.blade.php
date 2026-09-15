@@ -409,8 +409,8 @@ nano resources/views/cliente.blade.php            display: grid;
 
             <a href="{{ route('clientes.index') }}" class="client-back">
                 <svg viewBox="0 0 24 24" fill="none"
-                     stroke="currentColor" stroke-width="2"
-                     stroke-linecap="round" stroke-linejoin="round">
+                    stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
                     <line x1="19" y1="12" x2="5" y2="12"></line>
                     <polyline points="12 19 5 12 12 5"></polyline>
                 </svg>
@@ -497,19 +497,144 @@ nano resources/views/cliente.blade.php            display: grid;
 
             <section class="client-section">
 
-                <div class="client-section-head">
-                    <h2>Órdenes de reparación</h2>
-                </div>
+            <div class="client-section-head">
+                <h2>Órdenes de reparación</h2>
 
+                <button
+                    type="button"
+                    id="add-repair-order-btn"
+                    class="device-add-btn"
+                >
+                    + Nueva orden
+                </button>
+            </div>
+
+            <div id="repair-orders-container">
                 <div class="client-empty-section">
-                    Este cliente todavía no tiene órdenes de reparación.
+                    Cargando órdenes de reparación...
                 </div>
+            </div>
 
-            </section>
+        </section>
 
         </div>
 
     </div>
+
+<div id="repair-order-modal" class="device-modal hidden">
+
+    <div
+        class="device-modal-overlay"
+        id="repair-order-modal-overlay"
+    ></div>
+
+    <div class="device-modal-content">
+
+        <div class="device-modal-header">
+            <div>
+                <p class="device-modal-eyebrow">Cliente</p>
+                <h2>Nueva orden de reparación</h2>
+            </div>
+
+            <button
+                type="button"
+                id="repair-order-modal-close"
+                class="device-modal-close"
+            >
+                ×
+            </button>
+        </div>
+
+        <form id="repair-order-form">
+
+            <div class="device-form-group">
+                <label for="repair-order-device">
+                    Dispositivo
+                </label>
+
+                <select
+                    id="repair-order-device"
+                    required
+                >
+                    <option value="">
+                        Seleccioná un dispositivo
+                    </option>
+                </select>
+            </div>
+
+            <div class="device-form-group">
+                <label for="repair-order-problem">
+                    Problema reportado
+                </label>
+
+                <textarea
+                    id="repair-order-problem"
+                    rows="4"
+                    required
+                    placeholder="Describí el problema informado por el cliente..."
+                ></textarea>
+            </div>
+
+            <div class="device-form-group">
+                <label for="repair-order-priority">
+                    Prioridad
+                </label>
+
+                <select
+                    id="repair-order-priority"
+                    required
+                >
+                    <option value="normal">
+                        Normal
+                    </option>
+
+                    <option value="baja">
+                        Baja
+                    </option>
+
+                    <option value="urgente">
+                        Urgente
+                    </option>
+                </select>
+            </div>
+
+            <div class="device-form-group">
+                <label for="repair-order-notes">
+                    Notas de ingreso
+                </label>
+
+                <textarea
+                    id="repair-order-notes"
+                    rows="3"
+                    placeholder="Accesorios entregados, estado físico, observaciones, etc."
+                ></textarea>
+            </div>
+
+            <div class="device-modal-actions">
+
+                <button
+                    type="button"
+                    id="repair-order-cancel-btn"
+                    class="device-modal-cancel"
+                >
+                    Cancelar
+                </button>
+
+                <button
+                    type="submit"
+                    id="repair-order-save-btn"
+                    class="device-modal-save"
+                >
+                    Crear orden
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
 <div id="device-modal" class="device-modal hidden">
 
     <div class="device-modal-overlay" id="device-modal-overlay"></div>

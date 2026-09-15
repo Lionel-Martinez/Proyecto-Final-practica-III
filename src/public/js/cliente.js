@@ -1,7 +1,18 @@
 const customerId = document.body.dataset.customerId;
+
 const API_URL = `/api/clientes/${customerId}/dispositivos`;
+const REPAIR_ORDERS_API_URL = `/api/clientes/${customerId}/ordenes`;
 
 const devicesContainer = document.getElementById('devices-container');
+const repairOrdersContainer = document.getElementById('repair-orders-container');
+const repairOrderDeviceSelect = document.getElementById('repair-order-device');
+const repairOrderForm = document.getElementById('repair-order-form');
+const repairOrderSaveBtn = document.getElementById('repair-order-save-btn');
+const repairOrderModal = document.getElementById('repair-order-modal');
+const repairOrderModalOverlay = document.getElementById('repair-order-modal-overlay');
+const repairOrderModalClose = document.getElementById('repair-order-modal-close');
+const repairOrderCancelBtn = document.getElementById('repair-order-cancel-btn');
+const addRepairOrderBtn = document.getElementById('add-repair-order-btn');
 
 const deviceModal = document.getElementById('device-modal');
 const deviceModalOverlay = document.getElementById('device-modal-overlay');
@@ -10,6 +21,7 @@ const deviceCancelBtn = document.getElementById('device-cancel-btn');
 const addDeviceBtn = document.getElementById('add-device-btn');
 const deviceForm = document.getElementById('device-form');
 const deviceSaveBtn = document.getElementById('device-save-btn');
+
 let editingDeviceId = null;
 
 function getCsrfToken() {
@@ -25,7 +37,46 @@ function escapeHtml(value) {
         .replace(/'/g, '&#039;');
 }
 
+function formatRepairOrderStatus(status) {
+    const labels = {
+        recibido: 'Recibido',
+        en_reparacion: 'En reparación',
+        listo: 'Listo',
+        entregado: 'Entregado',
+        cancelado: 'Cancelado',
+    };
+
+    return labels[status] ?? status;
+}
+
+function formatRepairOrderPriority(priority) {
+    const labels = {
+        baja: 'Baja',
+        normal: 'Normal',
+        urgente: 'Urgente',
+    };
+
+    return labels[priority] ?? priority;
+}
+
 function renderDevices(devices) {
+    if (repairOrderDeviceSelect) {
+        repairOrderDeviceSelect.innerHTML = `
+            <option value="">
+                Seleccioná un dispositivo
+            </option>
+        `;
+
+        devices.forEach(device => {
+            const option = document.createElement('option');
+
+            option.value = device.id;
+            option.textContent = `${device.brand} ${device.model}`;
+
+            repairOrderDeviceSelect.appendChild(option);
+        });
+    }
+
     if (!devices.length) {
         devicesContainer.innerHTML = `
             <div class="client-empty-section">
@@ -36,72 +87,64 @@ function renderDevices(devices) {
     }
 
     devicesContainer.innerHTML = devices.map(device => `
-    <article class="device-card">
+        <article class="device-card">
+            <div class="device-card-main">
+                <div class="device-icon">
+                    📱
+                </div>
 
-        <div class="device-card-main">
+                <div class="device-info">
+                    <h3>${escapeHtml(device.brand)} ${escapeHtml(device.model)}</h3>
 
-            <div class="device-icon">
-                📱
+                    <p class="device-type">
+                        ${escapeHtml(device.type)}
+                    </p>
+
+                    ${
+                        device.imei
+                            ? `<p class="device-imei">IMEI: ${escapeHtml(device.imei)}</p>`
+                            : `<p class="device-imei">Sin IMEI registrado</p>`
+                    }
+                </div>
             </div>
 
-            <div class="device-info">
-                <h3>${escapeHtml(device.brand)} ${escapeHtml(device.model)}</h3>
+            <div class="device-actions">
+                <button
+                    type="button"
+                    class="device-edit-btn"
+                    data-device-id="${device.id}"
+                >
+                    Editar
+                </button>
 
-                <p class="device-type">
-                    ${escapeHtml(device.type)}
-                </p>
-
-                ${
-                    device.imei
-                        ? `<p class="device-imei">IMEI: ${escapeHtml(device.imei)}</p>`
-                        : `<p class="device-imei">Sin IMEI registrado</p>`
-                }
+                <button
+                    type="button"
+                    class="device-delete-btn"
+                    data-device-id="${device.id}"
+                >
+                    Eliminar
+                </button>
             </div>
+        </article>
+    `).join('');
 
-        </div>
+    document.querySelectorAll('.device-edit-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const deviceId = Number(button.dataset.deviceId);
+            const device = devices.find(item => item.id === deviceId);
 
-        <div class="device-actions">
-
-            <button
-                type="button"
-                class="device-edit-btn"
-                data-device-id="${device.id}"
-            >
-                Editar
-            </button>
-
-            <button
-                type="button"
-                class="device-delete-btn"
-                data-device-id="${device.id}"
-            >
-                Eliminar
-            </button>
-
-        </div>
-
-    </article>
-`).join('');
-
-document.querySelectorAll('.device-edit-btn').forEach(button => {
-    button.addEventListener('click', () => {
-        const deviceId = Number(button.dataset.deviceId);
-
-        const device = devices.find(item => item.id === deviceId);
-
-        if (device) {
-            openDeviceModal(device);
-        }
+            if (device) {
+                openDeviceModal(device);
+            }
+        });
     });
-});
 
-document.querySelectorAll('.device-delete-btn').forEach(button => {
-    button.addEventListener('click', () => {
-        const deviceId = Number(button.dataset.deviceId);
-
-        deleteDevice(deviceId);
+    document.querySelectorAll('.device-delete-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            const deviceId = Number(button.dataset.deviceId);
+            deleteDevice(deviceId);
+        });
     });
-});
 }
 
 async function loadDevices() {
@@ -155,6 +198,61 @@ function closeDeviceModal() {
     deviceModal.classList.add('hidden');
 }
 
+async function createRepairOrder(event) {
+    event.preventDefault();
+
+    const deviceId = repairOrderDeviceSelect?.value;
+    const reportedProblem = document.getElementById('repair-order-problem')?.value.trim();
+    const priority = document.getElementById('repair-order-priority')?.value;
+    const entryNotes = document.getElementById('repair-order-notes')?.value.trim();
+
+    if (!deviceId || !reportedProblem) {
+        alert('Seleccioná un dispositivo e indicá el problema reportado.');
+        return;
+    }
+
+    repairOrderSaveBtn.disabled = true;
+    repairOrderSaveBtn.textContent = 'Creando...';
+
+    try {
+        const response = await fetch(REPAIR_ORDERS_API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': getCsrfToken(),
+            },
+            body: JSON.stringify({
+                device_id: deviceId,
+                reported_problem: reportedProblem,
+                priority: priority,
+                entry_notes: entryNotes || null,
+            }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error(data);
+            throw new Error(
+                data.message || 'No se pudo crear la orden de reparación.'
+            );
+        }
+
+        closeRepairOrderModal();
+        repairOrderForm?.reset();
+
+        await loadRepairOrders();
+
+    } catch (error) {
+        console.error(error);
+        alert(error.message);
+    } finally {
+        repairOrderSaveBtn.disabled = false;
+        repairOrderSaveBtn.textContent = 'Crear orden';
+    }
+}
+
 function resetDeviceForm() {
     deviceForm.reset();
 }
@@ -186,14 +284,12 @@ async function deleteDevice(deviceId) {
         }
 
         await loadDevices();
-
     } catch (error) {
         console.error(error);
 
         alert(error.message);
     }
 }
-
 
 async function createDevice(event) {
     event.preventDefault();
@@ -214,6 +310,7 @@ async function createDevice(event) {
     const method = isEditing ? 'PUT' : 'POST';
 
     deviceSaveBtn.disabled = true;
+
     deviceSaveBtn.textContent = isEditing
         ? 'Guardando cambios...'
         : 'Guardando...';
@@ -251,7 +348,6 @@ async function createDevice(event) {
         resetDeviceForm();
 
         await loadDevices();
-
     } catch (error) {
         console.error(error);
 
@@ -261,10 +357,219 @@ async function createDevice(event) {
         deviceSaveBtn.textContent = 'Guardar dispositivo';
     }
 }
+
+function renderRepairOrders(orders) {
+    if (!repairOrdersContainer) {
+        return;
+    }
+
+    if (!orders.length) {
+        repairOrdersContainer.innerHTML = `
+            <div class="client-empty-section">
+                Este cliente todavía no tiene órdenes de reparación.
+            </div>
+        `;
+        return;
+    }
+
+    repairOrdersContainer.innerHTML = orders.map(order => `
+        <article class="repair-order-card">
+            <div class="repair-order-main">
+                <div class="repair-order-info">
+                    <h3>
+                        Orden #${order.id}
+                    </h3>
+
+                    <p>
+                        ${escapeHtml(
+                            order.dispositivo
+                                ? `${order.dispositivo.marca} ${order.dispositivo.modelo}`
+                                : 'Dispositivo no disponible'
+                        )}
+                    </p>
+
+                    <p>
+                        Problema:
+                        ${escapeHtml(order.reported_problem)}
+                    </p>
+                    ${
+                        order.entry_notes
+                            ? `
+                                <p>
+                                    Notas:
+                                    ${escapeHtml(order.entry_notes)}
+                                </p>
+                            `
+                            : ''
+                    }
+                    ${
+                        order.technical_diagnosis
+                            ? `
+                                <p>
+                                    Diagnóstico:
+                                    ${escapeHtml(order.technical_diagnosis)}
+                                </p>
+                            `
+                            : ''
+                    }
+                    <p>
+                        Ingreso:
+                        ${escapeHtml(
+                            order.received_at
+                            ? new Date(order.received_at).toLocaleString('es-AR')
+                            : 'Sin fecha'
+                        )}
+                    </p>
+                </div>
+
+                <div class="repair-order-status">
+
+                    <label>
+                        Estado
+                        <select
+                            class="repair-order-status-select"
+                            data-order-id="${order.id}"
+                        >
+                            <option
+                                value="recibido"
+                                ${order.status === 'recibido' ? 'selected' : ''}
+                        >
+                                Recibido
+                            </option>
+
+                            <option
+                            value="en_reparacion"
+                            ${order.status === 'en_reparacion' ? 'selected' : ''}
+                        >
+                            En reparación
+                            </option>
+
+                            <option
+                                value="listo"
+                                ${order.status === 'listo' ? 'selected' : ''}
+                        >
+                                Listo
+                            </option>
+
+                            <option
+                                value="entregado"
+                                ${order.status === 'entregado' ? 'selected' : ''}
+                        >
+                                Entregado
+                            </option>
+
+                            <option
+                                value="cancelado"
+                                ${order.status === 'cancelado' ? 'selected' : ''}
+                        >
+                                Cancelado
+                            </option>
+                        </select>
+                    </label>
+
+                    <span>
+                        ${escapeHtml(formatRepairOrderPriority(order.priority))}
+                    </span>
+
+</div>
+            </div>
+        </article>
+    `).join('');
+    document.querySelectorAll('.repair-order-status-select').forEach(select => {
+        select.addEventListener('change', () => {
+            const orderId = Number(select.dataset.orderId);
+            const newStatus = select.value;
+
+            updateRepairOrderStatus(orderId, newStatus);
+        });
+    });
+}
+
+
+async function loadRepairOrders() {
+    if (!repairOrdersContainer) {
+        return;
+    }
+
+    try {
+        const response = await fetch(REPAIR_ORDERS_API_URL, {
+            headers: {
+                'Accept': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(
+                'No se pudieron cargar las órdenes de reparación.'
+            );
+        }
+
+        const orders = await response.json();
+
+        renderRepairOrders(orders);
+    } catch (error) {
+        console.error(error);
+
+        repairOrdersContainer.innerHTML = `
+            <div class="client-empty-section">
+                No se pudieron cargar las órdenes de reparación.
+            </div>
+        `;
+    }
+}
+
+async function updateRepairOrderStatus(orderId, status) {
+    try {
+        const response = await fetch(
+            `${REPAIR_ORDERS_API_URL}/${orderId}`,
+            {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': getCsrfToken(),
+                },
+                body: JSON.stringify({
+                    status: status,
+                }),
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(
+                data.message || 'No se pudo actualizar el estado.'
+            );
+        }
+
+        await loadRepairOrders();
+
+    } catch (error) {
+        console.error(error);
+        alert(error.message);
+    }
+}
+
+function openRepairOrderModal() {
+    repairOrderModal?.classList.remove('hidden');
+}
+
+function closeRepairOrderModal() {
+    repairOrderModal?.classList.add('hidden');
+}
+
 addDeviceBtn?.addEventListener('click', openDeviceModal);
 deviceModalClose?.addEventListener('click', closeDeviceModal);
 deviceCancelBtn?.addEventListener('click', closeDeviceModal);
 deviceModalOverlay?.addEventListener('click', closeDeviceModal);
 deviceForm?.addEventListener('submit', createDevice);
 
+addRepairOrderBtn?.addEventListener('click', openRepairOrderModal);
+repairOrderModalClose?.addEventListener('click', closeRepairOrderModal);
+repairOrderCancelBtn?.addEventListener('click', closeRepairOrderModal);
+repairOrderModalOverlay?.addEventListener('click', closeRepairOrderModal);
+repairOrderForm?.addEventListener('submit', createRepairOrder);
+
 loadDevices();
+loadRepairOrders();

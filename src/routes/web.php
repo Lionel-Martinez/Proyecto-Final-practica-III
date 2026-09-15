@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DeviceController;
+use App\Http\Controllers\RepairOrderController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -50,4 +51,15 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{device}', [DeviceController::class, 'destroy'])
             ->name('api.dispositivos.destroy');
     });
+    //API De ordenes de reparacion
+    Route::prefix('api/clientes/{customer}/ordenes')->group(function () {
+    Route::get('/', [RepairOrderController::class, 'index'])
+        ->name('api.ordenes.index');
+
+    Route::post('/', [RepairOrderController::class, 'store'])
+        ->name('api.ordenes.store');
+
+    Route::put('/{order}', [RepairOrderController::class, 'update'])
+    ->name('api.ordenes.update');
+   });
 });
