@@ -9,8 +9,9 @@ const partModal = document.getElementById('part-modal');
 const partModalClose = document.getElementById('part-modal-close');
 const partModalCancel = document.getElementById('part-modal-cancel');
 const partForm = document.getElementById('part-form');
-let editingPartId = null;
 const partModalTitle = document.getElementById('part-modal-title');
+
+let editingPartId = null;
 
 const partSkuInput = document.getElementById('part-sku');
 const partNameInput = document.getElementById('part-name');
@@ -18,6 +19,7 @@ const partStockInput = document.getElementById('part-stock');
 const partMinimumStockInput = document.getElementById('part-minimum-stock');
 const partCostInput = document.getElementById('part-cost');
 const partSaleInput = document.getElementById('part-sale');
+
 
 function escapeHtml(value) {
     return String(value ?? '')
@@ -28,12 +30,14 @@ function escapeHtml(value) {
         .replace(/'/g, '&#039;');
 }
 
+
 function formatMoney(value) {
     return Number(value ?? 0).toLocaleString('es-AR', {
         style: 'currency',
         currency: 'ARS',
     });
 }
+
 
 async function loadParts() {
     if (!partsContainer || !API_URL) {
@@ -68,6 +72,7 @@ async function loadParts() {
     }
 }
 
+
 function renderParts(parts) {
     if (!parts.length) {
         partsContainer.innerHTML = `
@@ -79,81 +84,86 @@ function renderParts(parts) {
         return;
     }
 
-    partsContainer.innerHTML = parts.map(part => `
-        <article class="part-card">
+    partsContainer.innerHTML = parts.map(part => {
+        const stockLow =
+            Number(part.current_stock) <= Number(part.minimum_stock);
 
-            <div class="part-info">
+        return `
+            <article class="part-card">
 
-                <h3>
-                    ${escapeHtml(part.name)}
-                </h3>
+                <div class="part-info">
 
-                <p>
-                    SKU:
-                    ${escapeHtml(part.sku)}
-                </p>
+                    <h3>
+                        ${escapeHtml(part.name)}
+                    </h3>
 
-                <p>
-                    Stock:
-                    ${escapeHtml(part.current_stock)}
-                </p>
+                    <p>
+                        SKU:
+                        ${escapeHtml(part.sku)}
+                    </p>
 
-                <p>
-                    Stock mínimo:
-                    ${escapeHtml(part.minimum_stock)}
-                </p>
+                    <p>
+                        Stock:
+                        ${escapeHtml(part.current_stock)}
+                    </p>
 
-            </div>
+                    <p>
+                        Stock mínimo:
+                        ${escapeHtml(part.minimum_stock)}
+                    </p>
 
-            <div class="part-prices">
+                    ${stockLow ? `
+                        <p class="part-stock-low">
+                            ⚠ Stock bajo
+                        </p>
+                    ` : ''}
 
-                <p>
-                    Costo:
-                    ${formatMoney(part.cost_price)}
-                </p>
+                </div>
 
-                <p>
-                    Venta:
-                    ${formatMoney(part.sale_price)}
-                </p>
+                <div class="part-prices">
 
-                <button
-                    type="button"
-                    class="part-edit-btn"
-                    data-part-id="${part.id}"
-                >
-                    Editar
-                </button>
+                    <p>
+                        Costo:
+                        ${formatMoney(part.cost_price)}
+                    </p>
 
-                <button
-                    type="button"
-                    class="part-delete-btn"
-                    data-part-id="${part.id}"
-                >
-                    Eliminar
-                </button>
+                    <p>
+                        Venta:
+                        ${formatMoney(part.sale_price)}
+                    </p>
 
-            </div>
+                    <button
+                        type="button"
+                        class="part-edit-btn"
+                        data-part-id="${part.id}"
+                    >
+                        Editar
+                    </button>
 
-        </article>
-    `).join('');
+                    <button
+                        type="button"
+                        class="part-delete-btn"
+                        data-part-id="${part.id}"
+                    >
+                        Eliminar
+                    </button>
+
+                </div>
+
+            </article>
+        `;
+    }).join('');
 }
+
 
 function openPartModal() {
     if (!partModal) {
         return;
     }
 
-    editingPartId = null;
-
-    partForm?.reset();
-
-    if (partModalTitle) {
-        partModalTitle.textContent = 'Agregar repuesto';
-    }
-
     partModal.hidden = false;
 }
+
 
 function closePartModal() {
     if (!partModal) {
@@ -163,7 +173,23 @@ function closePartModal() {
     partModal.hidden = true;
 }
 
-addPartButton?.addEventListener('click', openPartModal);
+
+function openAddPartModal() {
+    editingPartId = null;
+
+    partForm?.reset();
+
+    if (partModalTitle) {
+        partModalTitle.textContent = 'Agregar repuesto';
+    }
+
+    openPartModal();
+}
+
+
+addPartButton?.addEventListener('click', openAddPartModal);
+
+
 async function openEditPartModal(partId) {
     if (!API_URL || !partForm) {
         return;
@@ -206,13 +232,16 @@ async function openEditPartModal(partId) {
         );
     }
 }
+
+
 partsContainer?.addEventListener('click', async event => {
+
     const editButton = event.target.closest('.part-edit-btn');
 
     if (editButton) {
         const partId = editButton.dataset.partId;
 
-        openEditPartModal(partId);
+        await openEditPartModal(partId);
 
         return;
     }
@@ -225,54 +254,58 @@ partsContainer?.addEventListener('click', async event => {
 
     const partId = deleteButton.dataset.partId;
 
-const confirmed = window.confirm(
-    '¿Seguro que querés eliminar este repuesto?'
-);
+    const confirmed = window.confirm(
+        '¿Seguro que querés eliminar este repuesto?'
+    );
 
-if (!confirmed) {
-    return;
-}
-
-try {
-    const response = await fetch(`${API_URL}/${partId}`, {
-        method: 'DELETE',
-        headers: {
-            'Accept': 'application/json',
-            'X-CSRF-TOKEN': document
-                .querySelector('meta[name="csrf-token"]')
-                ?.getAttribute('content'),
-        },
-    });
-
-    const result = await response.json();
-
-    if (!response.ok) {
-        console.error(
-            'Error al eliminar repuesto:',
-            result
-        );
-
+    if (!confirmed) {
         return;
     }
 
-    await loadParts();
+    try {
+        const response = await fetch(`${API_URL}/${partId}`, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': document
+                    .querySelector('meta[name="csrf-token"]')
+                    ?.getAttribute('content'),
+            },
+        });
 
-} catch (error) {
-    console.error(
-        'No se pudo eliminar el repuesto:',
-        error
-    );
-}
+        const result = await response.json();
+
+        if (!response.ok) {
+            console.error(
+                'Error al eliminar repuesto:',
+                result
+            );
+
+            return;
+        }
+
+        await loadParts();
+
+    } catch (error) {
+        console.error(
+            'No se pudo eliminar el repuesto:',
+            error
+        );
+    }
 });
+
+
 partModalClose?.addEventListener('click', closePartModal);
 
 partModalCancel?.addEventListener('click', closePartModal);
+
 
 partModal?.addEventListener('click', event => {
     if (event.target === partModal) {
         closePartModal();
     }
 });
+
 
 partForm?.addEventListener('submit', async event => {
     event.preventDefault();
@@ -316,7 +349,11 @@ partForm?.addEventListener('submit', async event => {
         const result = await response.json();
 
         if (!response.ok) {
-            console.error('Error al crear repuesto:', result);
+            console.error(
+                'Error al guardar repuesto:',
+                result
+            );
+
             return;
         }
 
@@ -324,14 +361,17 @@ partForm?.addEventListener('submit', async event => {
 
         partForm.reset();
 
+        editingPartId = null;
+
         await loadParts();
 
     } catch (error) {
         console.error(
-            'No se pudo crear el repuesto:',
+            'No se pudo guardar el repuesto:',
             error
         );
     }
 });
+
 
 loadParts();
