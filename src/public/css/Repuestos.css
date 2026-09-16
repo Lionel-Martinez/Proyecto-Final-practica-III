@@ -104,3 +104,32 @@
         text-align: left;
     }
 }
+.part-edit-btn {
+    margin-top: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 6px;
+    padding: 0.45rem 0.75rem;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+}
+
+.part-delete-btn {
+    margin-top: 0.75rem;
+    margin-left: 0.4rem;
+    border: 1px solid rgba(255, 80, 80, 0.25);
+    border-radius: 6px;
+    padding: 0.45rem 0.75rem;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+}
+
+.part-delete-btn:hover {
+    background: rgba(255, 80, 80, 0.08);
+}
+.part-edit-btn:hover {
+    background: rgba(255, 255, 255, 0.06);
+}

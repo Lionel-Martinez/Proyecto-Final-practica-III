@@ -9,6 +9,15 @@ const partModal = document.getElementById('part-modal');
 const partModalClose = document.getElementById('part-modal-close');
 const partModalCancel = document.getElementById('part-modal-cancel');
 const partForm = document.getElementById('part-form');
+let editingPartId = null;
+const partModalTitle = document.getElementById('part-modal-title');
+
+const partSkuInput = document.getElementById('part-sku');
+const partNameInput = document.getElementById('part-name');
+const partStockInput = document.getElementById('part-stock');
+const partMinimumStockInput = document.getElementById('part-minimum-stock');
+const partCostInput = document.getElementById('part-cost');
+const partSaleInput = document.getElementById('part-sale');
 
 function escapeHtml(value) {
     return String(value ?? '')
@@ -108,6 +117,22 @@ function renderParts(parts) {
                     ${formatMoney(part.sale_price)}
                 </p>
 
+                <button
+                    type="button"
+                    class="part-edit-btn"
+                    data-part-id="${part.id}"
+                >
+                    Editar
+                </button>
+
+                <button
+                    type="button"
+                    class="part-delete-btn"
+                    data-part-id="${part.id}"
+                >
+                    Eliminar
+                </button>
+
             </div>
 
         </article>
@@ -117,6 +142,14 @@ function renderParts(parts) {
 function openPartModal() {
     if (!partModal) {
         return;
+    }
+
+    editingPartId = null;
+
+    partForm?.reset();
+
+    if (partModalTitle) {
+        partModalTitle.textContent = 'Agregar repuesto';
     }
 
     partModal.hidden = false;
@@ -131,7 +164,106 @@ function closePartModal() {
 }
 
 addPartButton?.addEventListener('click', openPartModal);
+async function openEditPartModal(partId) {
+    if (!API_URL || !partForm) {
+        return;
+    }
 
+    try {
+        const response = await fetch(`${API_URL}/${partId}`, {
+            headers: {
+                'Accept': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(
+                'No se pudo cargar el repuesto.'
+            );
+        }
+
+        const part = await response.json();
+
+        editingPartId = part.id;
+
+        partSkuInput.value = part.sku ?? '';
+        partNameInput.value = part.name ?? '';
+        partStockInput.value = part.current_stock ?? 0;
+        partMinimumStockInput.value = part.minimum_stock ?? 0;
+        partCostInput.value = part.cost_price ?? 0;
+        partSaleInput.value = part.sale_price ?? 0;
+
+        if (partModalTitle) {
+            partModalTitle.textContent = 'Editar repuesto';
+        }
+
+        openPartModal();
+
+    } catch (error) {
+        console.error(
+            'No se pudo cargar el repuesto:',
+            error
+        );
+    }
+}
+partsContainer?.addEventListener('click', async event => {
+    const editButton = event.target.closest('.part-edit-btn');
+
+    if (editButton) {
+        const partId = editButton.dataset.partId;
+
+        openEditPartModal(partId);
+
+        return;
+    }
+
+    const deleteButton = event.target.closest('.part-delete-btn');
+
+    if (!deleteButton) {
+        return;
+    }
+
+    const partId = deleteButton.dataset.partId;
+
+const confirmed = window.confirm(
+    '¿Seguro que querés eliminar este repuesto?'
+);
+
+if (!confirmed) {
+    return;
+}
+
+try {
+    const response = await fetch(`${API_URL}/${partId}`, {
+        method: 'DELETE',
+        headers: {
+            'Accept': 'application/json',
+            'X-CSRF-TOKEN': document
+                .querySelector('meta[name="csrf-token"]')
+                ?.getAttribute('content'),
+        },
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+        console.error(
+            'Error al eliminar repuesto:',
+            result
+        );
+
+        return;
+    }
+
+    await loadParts();
+
+} catch (error) {
+    console.error(
+        'No se pudo eliminar el repuesto:',
+        error
+    );
+}
+});
 partModalClose?.addEventListener('click', closePartModal);
 
 partModalCancel?.addEventListener('click', closePartModal);
@@ -161,8 +293,16 @@ partForm?.addEventListener('submit', async event => {
     };
 
     try {
-        const response = await fetch(API_URL, {
-            method: 'POST',
+        const url = editingPartId
+            ? `${API_URL}/${editingPartId}`
+            : API_URL;
+
+        const method = editingPartId
+            ? 'PUT'
+            : 'POST';
+
+        const response = await fetch(url, {
+            method,
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
