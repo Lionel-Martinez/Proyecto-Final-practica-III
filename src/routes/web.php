@@ -5,6 +5,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\PartController;
 use App\Http\Controllers\RepairOrderController;
+use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -22,8 +23,28 @@ Route::middleware('auth')->group(function () {
 
     // Pantalla de repuestos
     Route::get('/repuestos', function () {
-        return view('repuestos');
-    })->name('repuestos.index');
+    return view('repuestos');
+})->name('repuestos.index');
+
+Route::get('/proveedores', function () {
+    return view('proveedores');
+})->name('proveedores.index');
+    Route::prefix('api/proveedores')->group(function () {
+    Route::get('/', [SupplierController::class, 'index'])
+        ->name('api.proveedores.index');
+
+    Route::post('/', [SupplierController::class, 'store'])
+        ->name('api.proveedores.store');
+
+    Route::get('/{supplier}', [SupplierController::class, 'show'])
+        ->name('api.proveedores.show');
+
+    Route::put('/{supplier}', [SupplierController::class, 'update'])
+        ->name('api.proveedores.update');
+
+    Route::delete('/{supplier}', [SupplierController::class, 'destroy'])
+        ->name('api.proveedores.destroy');
+});
 
     // Pantalla de clientes
     Route::get('/clientes', function () {
