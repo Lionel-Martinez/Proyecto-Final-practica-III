@@ -26,6 +26,12 @@ const supplierForm = document.getElementById(
     'supplier-form'
 );
 
+const supplierModalTitle = document.getElementById(
+    'supplier-modal-title'
+);
+
+let editingSupplierId = null;
+
 
 function escapeHtml(value) {
     return String(value ?? '')
@@ -111,6 +117,22 @@ function renderSuppliers(suppliers) {
                     ${escapeHtml(supplier.address)}
                 </p>
 
+                <button
+                    type="button"
+                    class="supplier-edit-btn"
+                    data-supplier-id="${supplier.id}"
+                >
+                Editar
+                </button>
+
+                <button
+                    type="button"
+                    class="supplier-delete-btn"
+                    data-supplier-id="${supplier.id}"
+                >
+                    Eliminar
+                </button>
+
             </div>
 
         </article>
@@ -124,6 +146,12 @@ function openSupplierModal() {
     }
 
     supplierForm?.reset();
+
+    editingSupplierId = null;
+
+    if (supplierModalTitle) {
+        supplierModalTitle.textContent = 'Agregar proveedor';
+    }
 
     supplierModal.hidden = false;
 }
@@ -166,6 +194,135 @@ supplierModal?.addEventListener(
 );
 
 
+async function openEditSupplierModal(supplierId) {
+    if (!API_URL || !supplierForm) {
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            `${API_URL}/${supplierId}`,
+            {
+                headers: {
+                    'Accept': 'application/json',
+                },
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(
+                'No se pudo cargar el proveedor.'
+            );
+        }
+
+        const supplier = await response.json();
+
+        editingSupplierId = supplier.id;
+
+        supplierForm.elements.name.value =
+            supplier.name ?? '';
+
+        supplierForm.elements.contact_name.value =
+            supplier.contact_name ?? '';
+
+        supplierForm.elements.phone.value =
+            supplier.phone ?? '';
+
+        supplierForm.elements.email.value =
+            supplier.email ?? '';
+
+        supplierForm.elements.address.value =
+            supplier.address ?? '';
+
+        if (supplierModalTitle) {
+            supplierModalTitle.textContent =
+                'Editar proveedor';
+        }
+
+        supplierModal.hidden = false;
+
+    } catch (error) {
+        console.error(
+            'No se pudo cargar el proveedor:',
+            error
+        );
+    }
+}
+
+
+suppliersContainer?.addEventListener(
+    'click',
+    async event => {
+        const editButton = event.target.closest(
+            '.supplier-edit-btn'
+        );
+
+        if (editButton) {
+            const supplierId =
+                editButton.dataset.supplierId;
+
+            await openEditSupplierModal(supplierId);
+
+            return;
+        }
+
+        const deleteButton = event.target.closest(
+            '.supplier-delete-btn'
+        );
+
+        if (!deleteButton) {
+            return;
+        }
+
+        const supplierId =
+            deleteButton.dataset.supplierId;
+
+        const confirmed = window.confirm(
+            '¿Seguro que querés eliminar este proveedor?'
+        );
+
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                `${API_URL}/${supplierId}`,
+                {
+                    method: 'DELETE',
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': document
+                            .querySelector(
+                                'meta[name="csrf-token"]'
+                            )
+                            ?.getAttribute('content'),
+                    },
+                }
+            );
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                console.error(
+                    'Error al eliminar proveedor:',
+                    result
+                );
+
+                return;
+            }
+
+            await loadSuppliers();
+
+        } catch (error) {
+            console.error(
+                'No se pudo eliminar el proveedor:',
+                error
+            );
+        }
+    }
+);
+
 supplierForm?.addEventListener(
     'submit',
     async event => {
@@ -175,7 +332,9 @@ supplierForm?.addEventListener(
             return;
         }
 
-        const formData = new FormData(supplierForm);
+        const formData = new FormData(
+            supplierForm
+        );
 
         const data = {
             name: formData.get('name'),
@@ -186,13 +345,23 @@ supplierForm?.addEventListener(
         };
 
         try {
-            const response = await fetch(API_URL, {
-                method: 'POST',
+            const url = editingSupplierId
+                ? `${API_URL}/${editingSupplierId}`
+                : API_URL;
+
+            const method = editingSupplierId
+                ? 'PUT'
+                : 'POST';
+
+            const response = await fetch(url, {
+                method,
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document
-                        .querySelector('meta[name="csrf-token"]')
+                        .querySelector(
+                            'meta[name="csrf-token"]'
+                        )
                         ?.getAttribute('content'),
                 },
                 body: JSON.stringify(data),
@@ -210,7 +379,10 @@ supplierForm?.addEventListener(
             }
 
             closeSupplierModal();
+
             supplierForm.reset();
+
+            editingSupplierId = null;
 
             await loadSuppliers();
 

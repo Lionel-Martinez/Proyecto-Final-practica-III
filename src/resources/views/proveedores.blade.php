@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -17,9 +16,6 @@
 </head>
 
 <body>
-    <h1 style="color: red; font-size: 40px;">
-    PRUEBA PROVEEDORES
-</h1>
     <main
     class="proveedores-page"
     data-api-url="{{ url('/api/proveedores') }}"
