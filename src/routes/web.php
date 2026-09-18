@@ -105,5 +105,15 @@ Route::prefix('api/repuestos')->group(function () {
 
     Route::delete('/{part}', [PartController::class, 'destroy'])
         ->name('api.repuestos.destroy');
+
+        // Asistente de nueva orden de reparación
+    Route::get('/nueva-orden', [\App\Http\Controllers\RepairOrderWizardController::class, 'create'])
+        ->name('ordenes.create');
+
+    Route::post('/nueva-orden', [\App\Http\Controllers\RepairOrderWizardController::class, 'store'])
+        ->name('ordenes.store');
+
+    Route::get('/api/ordenes/buscar-cliente', [\App\Http\Controllers\RepairOrderWizardController::class, 'buscarCliente'])
+        ->name('api.ordenes.buscarCliente');
 });
 });

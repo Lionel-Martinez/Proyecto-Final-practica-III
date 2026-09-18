@@ -67,7 +67,7 @@
                 </a>
             </li>
             <li data-roles="admin,tecnico,mostrador">
-                <a href="#">
+                <a href="{{ route('ordenes.create') }}" class="{{ request()->routeIs('ordenes.*') ? 'selected' : '' }}">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 1 1-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 1 1 5.4-5.4z"></path></svg>
                     <span>Repair Orders</span>
                 </a>
@@ -100,7 +100,7 @@
     </nav>
 
     <div class="sidebar-foot">
-        <a href="#" class="new-repair-btn" data-roles="admin,tecnico,mostrador">
+        <a href="{{ route('ordenes.create') }}" class="new-repair-btn" data-roles="admin,tecnico,mostrador">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
             New Repair
         </a>
