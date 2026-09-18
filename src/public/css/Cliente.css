@@ -258,3 +258,15 @@ input::placeholder { color: #b3b8bf; }
   .device-modal-actions { flex-direction: column-reverse; }
   .device-cancel-btn, .device-save-btn { width: 100%; }
 }
+
+/* ---------- foto de ingreso en la tarjeta de orden ---------- */
+
+.repair-order-photo {
+  display: block;
+  width: 100%;
+  max-width: 12rem;
+  border-radius: 0.5rem;
+  margin: 0.6rem 0;
+  border: 1px solid #ececec;
+  cursor: zoom-in;
+}

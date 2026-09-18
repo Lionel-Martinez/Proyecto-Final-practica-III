@@ -5,6 +5,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\PartController;
 use App\Http\Controllers\RepairOrderController;
+use App\Http\Controllers\RepairOrderWizardController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,33 +19,26 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-        Route::get('/panel', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/panel', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
     Route::post('/logout', [AuthController::class, 'destroy'])->name('logout');
 
     // Pantalla de repuestos
     Route::get('/repuestos', function () {
-    return view('repuestos');
-})->name('repuestos.index');
+        return view('repuestos');
+    })->name('repuestos.index');
 
-Route::get('/proveedores', function () {
-    return view('proveedores');
-})->name('proveedores.index');
+    Route::get('/proveedores', function () {
+        return view('proveedores');
+    })->name('proveedores.index');
+
     Route::prefix('api/proveedores')->group(function () {
-    Route::get('/', [SupplierController::class, 'index'])
-        ->name('api.proveedores.index');
-
-    Route::post('/', [SupplierController::class, 'store'])
-        ->name('api.proveedores.store');
-
-    Route::get('/{supplier}', [SupplierController::class, 'show'])
-        ->name('api.proveedores.show');
-
-    Route::put('/{supplier}', [SupplierController::class, 'update'])
-        ->name('api.proveedores.update');
-
-    Route::delete('/{supplier}', [SupplierController::class, 'destroy'])
-        ->name('api.proveedores.destroy');
-});
+        Route::get('/', [SupplierController::class, 'index'])->name('api.proveedores.index');
+        Route::post('/', [SupplierController::class, 'store'])->name('api.proveedores.store');
+        Route::get('/{supplier}', [SupplierController::class, 'show'])->name('api.proveedores.show');
+        Route::put('/{supplier}', [SupplierController::class, 'update'])->name('api.proveedores.update');
+        Route::delete('/{supplier}', [SupplierController::class, 'destroy'])->name('api.proveedores.destroy');
+    });
 
     // Pantalla de clientes
     Route::get('/clientes', function () {
@@ -66,54 +60,31 @@ Route::get('/proveedores', function () {
 
     // API de dispositivos
     Route::prefix('api/clientes/{customer}/dispositivos')->group(function () {
-        Route::get('/', [DeviceController::class, 'index'])
-            ->name('api.dispositivos.index');
-
-        Route::post('/', [DeviceController::class, 'store'])
-            ->name('api.dispositivos.store');
-
-        Route::put('/{device}', [DeviceController::class, 'update'])
-            ->name('api.dispositivos.update');
-
-        Route::delete('/{device}', [DeviceController::class, 'destroy'])
-            ->name('api.dispositivos.destroy');
+        Route::get('/', [DeviceController::class, 'index'])->name('api.dispositivos.index');
+        Route::post('/', [DeviceController::class, 'store'])->name('api.dispositivos.store');
+        Route::put('/{device}', [DeviceController::class, 'update'])->name('api.dispositivos.update');
+        Route::delete('/{device}', [DeviceController::class, 'destroy'])->name('api.dispositivos.destroy');
     });
-    //API De ordenes de reparacion
+
+    // API de ordenes de reparacion (dentro de la ficha del cliente)
     Route::prefix('api/clientes/{customer}/ordenes')->group(function () {
-    Route::get('/', [RepairOrderController::class, 'index'])
-        ->name('api.ordenes.index');
+        Route::get('/', [RepairOrderController::class, 'index'])->name('api.ordenes.index');
+        Route::post('/', [RepairOrderController::class, 'store'])->name('api.ordenes.store');
+        Route::put('/{order}', [RepairOrderController::class, 'update'])->name('api.ordenes.update');
+    });
 
-    Route::post('/', [RepairOrderController::class, 'store'])
-        ->name('api.ordenes.store');
+    // API de repuestos
+    Route::prefix('api/repuestos')->group(function () {
+        Route::get('/', [PartController::class, 'index'])->name('api.repuestos.index');
+        Route::post('/', [PartController::class, 'store'])->name('api.repuestos.store');
+        Route::get('/{part}', [PartController::class, 'show'])->name('api.repuestos.show');
+        Route::put('/{part}', [PartController::class, 'update'])->name('api.repuestos.update');
+        Route::delete('/{part}', [PartController::class, 'destroy'])->name('api.repuestos.destroy');
+    });
 
-    Route::put('/{order}', [RepairOrderController::class, 'update'])
-    ->name('api.ordenes.update');
-});
-   // API de repuestos
-Route::prefix('api/repuestos')->group(function () {
-    Route::get('/', [PartController::class, 'index'])
-        ->name('api.repuestos.index');
+    // Asistente de nueva orden de reparación
+    Route::get('/nueva-orden', [RepairOrderWizardController::class, 'create'])->name('ordenes.create');
+    Route::post('/nueva-orden', [RepairOrderWizardController::class, 'store'])->name('ordenes.store');
+    Route::get('/api/ordenes/buscar-cliente', [RepairOrderWizardController::class, 'buscarCliente'])->name('api.ordenes.buscarCliente');
 
-    Route::post('/', [PartController::class, 'store'])
-        ->name('api.repuestos.store');
-
-    Route::get('/{part}', [PartController::class, 'show'])
-        ->name('api.repuestos.show');
-
-    Route::put('/{part}', [PartController::class, 'update'])
-        ->name('api.repuestos.update');
-
-    Route::delete('/{part}', [PartController::class, 'destroy'])
-        ->name('api.repuestos.destroy');
-
-        // Asistente de nueva orden de reparación
-    Route::get('/nueva-orden', [\App\Http\Controllers\RepairOrderWizardController::class, 'create'])
-        ->name('ordenes.create');
-
-    Route::post('/nueva-orden', [\App\Http\Controllers\RepairOrderWizardController::class, 'store'])
-        ->name('ordenes.store');
-
-    Route::get('/api/ordenes/buscar-cliente', [\App\Http\Controllers\RepairOrderWizardController::class, 'buscarCliente'])
-        ->name('api.ordenes.buscarCliente');
-});
 });
