@@ -50,6 +50,7 @@
     </div>
 </header>
 
+@unless ($noSidebar ?? false)
 <div class="sidebar" id="sidebar">
     <nav>
         <ul>
@@ -113,8 +114,9 @@
         </a>
     </div>
 </div>
+@endunless
 
-<main id="main">
+<main id="main" class="{{ ($noSidebar ?? false) ? 'main-full' : '' }}">
     @yield('content')
 </main>
 

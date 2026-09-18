@@ -18,7 +18,7 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/panel', fn () => view('dashboard'))->name('dashboard');
+        Route::get('/panel', [\App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
     Route::post('/logout', [AuthController::class, 'destroy'])->name('logout');
 
     // Pantalla de repuestos
