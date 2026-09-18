@@ -52,6 +52,16 @@ class PartController extends Controller
                 'numeric',
                 'min:0',
             ],
+            'category' => [
+                'required',
+                'string',
+                'max:60',
+            ],
+            'icon' => [
+                'required',
+                'string',
+                Rule::in(['pantalla', 'bateria', 'placa', 'carcasa', 'puerto', 'camara', 'accesorio', 'otro']),
+            ],
         ]);
 
         $part = Part::create($validated);
@@ -97,6 +107,16 @@ class PartController extends Controller
                 'required',
                 'numeric',
                 'min:0',
+            ],
+            'category' => [
+                'required',
+                'string',
+                'max:60',
+            ],
+            'icon' => [
+                'required',
+                'string',
+                Rule::in(['pantalla', 'bateria', 'placa', 'carcasa', 'puerto', 'camara', 'accesorio', 'otro']),
             ],
         ]);
 

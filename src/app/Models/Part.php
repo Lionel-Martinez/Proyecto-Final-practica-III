@@ -10,13 +10,15 @@ class Part extends Model
     use HasFactory;
 
     protected $fillable = [
-        'sku',
-        'name',
-        'current_stock',
-        'minimum_stock',
-        'cost_price',
-        'sale_price',
-    ];
+    'sku',
+    'name',
+    'category',
+    'icon',
+    'current_stock',
+    'minimum_stock',
+    'cost_price',
+    'sale_price',
+];
 
     protected $casts = [
         'current_stock' => 'integer',
