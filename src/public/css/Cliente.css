@@ -270,3 +270,16 @@ input::placeholder { color: #b3b8bf; }
   border: 1px solid #ececec;
   cursor: zoom-in;
 }
+
+/* ---------- link al certificado de garantía ---------- */
+
+.warranty-link {
+  display: inline-block;
+  margin: 0.4rem 0;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #1a7d3c;
+  text-decoration: none;
+}
+
+.warranty-link:hover { text-decoration: underline; }

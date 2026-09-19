@@ -419,6 +419,15 @@ function renderRepairOrders(orders) {
                             : ''
                     }
                     ${
+                        order.warranty_code
+                            ? `
+                                <a href="/garantia/${escapeHtml(order.warranty_code)}" target="_blank" rel="noopener" class="warranty-link">
+                                    🛡️ Ver certificado de garantía (${escapeHtml(order.warranty_code)})
+                                </a>
+                            `
+                            : ''
+                    }
+                    ${
                         order.entry_notes
                             ? `
                                 <p>

@@ -76,6 +76,8 @@ class WorkQueueController extends Controller
         $order->update([
             'status' => 'entregado',
             'exit_photo_path' => $photoPath,
+            'warranty_code' => 'GAR-' . str_pad($order->id, 6, '0', STR_PAD_LEFT),
+            'warranty_expires_at' => now()->addDays(90),
         ]);
 
         return response()->json($this->formatOrder($order->fresh('device.customer')));

@@ -47,6 +47,11 @@
 
         .refresh-hint { text-align: center; font-size: 0.76rem; color: #9aa0a8; margin-top: 1rem; }
         .warranty { background: #eef8f0; border: 1px solid #cdeed6; color: #1a7d3c; border-radius: 0.7rem; padding: 1rem 1.2rem; font-size: 0.85rem; }
+        .warranty-btn {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            background: #14161a; color: #fff; text-decoration: none;
+            padding: 0.7rem 1.1rem; border-radius: 0.5rem; font-weight: 700; font-size: 0.85rem;
+        }
     </style>
 </head>
 <body>
@@ -105,8 +110,15 @@
             </ul>
         </div>
 
-        @if ($order->status === 'entregado')
-            <div class="warranty">Tu equipo ya fue entregado. ¡Gracias por confiar en Ulicel!</div>
+                @if ($order->status === 'entregado')
+            <div class="warranty">
+                <p style="margin: 0 0 0.7rem;">Tu equipo ya fue entregado. ¡Gracias por confiar en Ulicel!</p>
+                @if ($order->warranty_code)
+                    <a href="{{ route('garantia.show', $order->warranty_code) }}" class="warranty-btn">
+                        🛡️ Ver certificado de garantía
+                    </a>
+                @endif
+            </div>
         @endif
 
         <p class="refresh-hint">Volvé a abrir este link cuando quieras para ver el estado actualizado.</p>

@@ -94,8 +94,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/work-queue', [WorkQueueController::class, 'view'])->name('work-queue.index');
     Route::get('/api/work-queue', [WorkQueueController::class, 'index'])->name('api.work-queue.index');
     Route::put('/api/work-queue/{order}/iniciar', [WorkQueueController::class, 'iniciar'])->name('api.work-queue.iniciar');
-    Route::post('/api/work-queue/{order}/entregar', [WorkQueueController::class, 'entregar'])->name('api.work-queue.entregar');
-    Route::put('/api/work-queue/{order}/iniciar', [WorkQueueController::class, 'iniciar'])->name('api.work-queue.iniciar');
     Route::put('/api/work-queue/{order}/listo', [WorkQueueController::class, 'listo'])->name('api.work-queue.listo');
     Route::post('/api/work-queue/{order}/entregar', [WorkQueueController::class, 'entregar'])->name('api.work-queue.entregar');
     Route::post('/api/work-queue/{order}/cancelar', [WorkQueueController::class, 'cancelar'])->name('api.work-queue.cancelar');
@@ -109,3 +107,5 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/seguimiento/{trackingCode}', [\App\Http\Controllers\RepairOrderWizardController::class, 'seguimiento'])->name('ordenes.seguimiento');
+
+Route::get('/garantia/{warrantyCode}', [\App\Http\Controllers\WarrantyController::class, 'show'])->name('garantia.show');
