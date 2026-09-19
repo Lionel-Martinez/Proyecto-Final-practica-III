@@ -1,0 +1,310 @@
+/* Se carga después de "menu principal.css". */
+
+.breadcrumb {
+  margin: 0 0 0.6rem;
+  font-family: "Courier New", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #9aa0a8;
+}
+
+.breadcrumb a { color: #9aa0a8; text-decoration: none; }
+.breadcrumb a:hover { color: #14161a; }
+.breadcrumb strong { color: #14161a; }
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.1rem;
+  align-items: start;
+}
+
+.board-col { background: #f4f5f6; border-radius: 0.8rem; padding: 0.9rem; min-height: 12rem; }
+
+.board-col-head { display: flex; align-items: center; justify-content: space-between; padding: 0.3rem 0.4rem 0.9rem; }
+
+.board-col-title {
+  font-family: "Courier New", monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #4b5563;
+}
+
+.board-col-head-progreso .board-col-title { color: #b45309; }
+.board-col-head-done .board-col-title { color: #1a9d4b; }
+
+.board-col-count {
+  font-family: "Courier New", monospace;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #fff;
+  background: #9aa0a8;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.4rem;
+}
+
+.board-col-head-progreso .board-col-count { background: #b45309; }
+.board-col-head-done .board-col-count { background: #1a9d4b; }
+
+.board-col-body { display: flex; flex-direction: column; gap: 0.7rem; }
+
+.board-empty {
+  padding: 1.6rem 0.8rem;
+  text-align: center;
+  font-size: 0.82rem;
+  color: #9aa0a8;
+  border: 1px dashed #d7dce2;
+  border-radius: 0.6rem;
+}
+
+.job-card {
+  background: #fff;
+  border: 1px solid #ececec;
+  border-left: 4px solid #d7dce2;
+  border-radius: 0.6rem;
+  padding: 1rem 1.1rem 1.1rem;
+  transition: opacity 0.2s ease;
+}
+
+.job-card.priority-urgente { border-left-color: #e5484d; }
+.job-card.status-progreso { border-left-color: #b45309; }
+.job-card.status-entregada { border-left-color: #1a9d4b; opacity: 0.75; }
+
+.job-card-head { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; margin-bottom: 0.6rem; }
+
+.job-order-chip {
+  font-family: "Courier New", monospace;
+  font-size: 0.72rem;
+  color: #6b7280;
+  background: #f4f5f6;
+  padding: 0.18rem 0.45rem;
+  border-radius: 0.3rem;
+}
+
+.job-flag {
+  font-family: "Courier New", monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #e5484d;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.job-flag .dot { width: 0.35rem; height: 0.35rem; border-radius: 50%; background: currentColor; animation: pulse-flag 1.4s ease-in-out infinite; }
+
+@keyframes pulse-flag { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+.job-flag.is-progress { color: #b45309; }
+.job-flag.is-done { color: #1a9d4b; }
+
+.job-card h3 { margin: 0 0 0.5rem; font-size: 1rem; font-weight: 800; }
+
+.job-card .falla { display: flex; align-items: flex-start; gap: 0.45rem; font-size: 0.83rem; color: #4b5563; margin-bottom: 0.9rem; line-height: 1.4; }
+.job-card .falla svg { width: 0.95rem; height: 0.95rem; flex-shrink: 0; margin-top: 0.15rem; color: #9aa0a8; }
+
+.job-card-foot { padding-top: 0.8rem; border-top: 1px solid #f2f3f5; }
+
+.job-date {
+  display: block;
+  font-family: "Courier New", monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #9aa0a8;
+  margin-bottom: 0.6rem;
+}
+
+.start-btn {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border: none;
+  border-radius: 0.4rem;
+  padding: 0.6rem 0.7rem;
+  background: #14161a;
+  color: #fff;
+  font-size: 0.83rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.start-btn:hover { background: #b80f22; }
+.start-btn svg { width: 0.8rem; height: 0.8rem; }
+
+.job-card.status-progreso .start-btn { background: #b45309; }
+.job-card.status-progreso .start-btn:hover { background: #14161a; }
+
+.job-card.status-entregada .start-btn { background: #eef8f0; color: #1a9d4b; cursor: default; }
+
+@media (max-width: 1000px) {
+  .board { grid-template-columns: 1fr; }
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 22, 26, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 200;
+}
+
+.modal-overlay[hidden] { display: none; }
+
+.modal-dialog {
+  width: 100%;
+  max-width: 28rem;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 0.9rem;
+  box-shadow: 0 30px 60px rgba(16, 24, 40, 0.25);
+}
+
+.modal-head { display: flex; align-items: center; justify-content: space-between; padding: 1.3rem 1.6rem; border-bottom: 1px solid #ececec; }
+.modal-head-title { display: flex; align-items: center; gap: 0.6rem; }
+.modal-head-title svg { width: 1.2rem; height: 1.2rem; }
+.modal-head-title h2 { margin: 0; font-size: 1.15rem; font-weight: 800; }
+.modal-order-id { font-family: "Courier New", monospace; font-size: 0.78rem; color: #9aa0a8; }
+
+.modal-close {
+  width: 2.2rem;
+  height: 2.2rem;
+  border: none;
+  background: transparent;
+  border-radius: 0.4rem;
+  color: #6b7280;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-close:hover { background: #f4f5f6; color: #14161a; }
+.modal-close svg { width: 1.1rem; height: 1.1rem; }
+
+.modal-body { padding: 1.4rem 1.6rem; }
+
+.modal-block { background: #f9fafb; border: 1px solid #ececec; border-radius: 0.6rem; padding: 1.1rem 1.2rem; }
+
+.modal-block-title { display: flex; align-items: center; gap: 0.5rem; margin: 0 0 0.9rem; font-size: 0.95rem; font-weight: 700; }
+.modal-block-title svg { width: 1.05rem; height: 1.05rem; color: #6b7280; }
+
+.modal-dropzone {
+  position: relative;
+  border: 2px dashed #d7dce2;
+  border-radius: 0.5rem;
+  min-height: 10rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1.2rem;
+  cursor: pointer;
+  background: #fff;
+  transition: border-color 0.15s ease, background 0.15s ease;
+  overflow: hidden;
+}
+
+.modal-dropzone:hover, .modal-dropzone:focus-visible, .modal-dropzone.drag-over { border-color: #b80f22; background: #fdf3f3; }
+
+.modal-dropzone-empty { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; color: #6b7280; }
+.modal-dropzone-empty svg { width: 1.7rem; height: 1.7rem; color: #9aa0a8; }
+.modal-dropzone-empty strong { font-size: 0.92rem; color: #14161a; }
+.modal-dropzone-empty em { font-size: 0.78rem; font-style: italic; }
+
+.modal-dropzone-preview { width: 100%; height: 100%; min-height: 10rem; object-fit: cover; border-radius: 0.4rem; }
+
+.modal-dropzone-remove {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  border: none;
+  background: rgba(20, 22, 26, 0.75);
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.modal-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin: 0 1.6rem 1.4rem;
+  padding: 0.8rem 1rem;
+  background: #f4f5f6;
+  border-left: 3px solid #14161a;
+  border-radius: 0.4rem;
+  font-size: 0.85rem;
+  color: #4b5563;
+}
+
+.modal-info svg { width: 1.05rem; height: 1.05rem; flex-shrink: 0; margin-top: 0.05rem; color: #14161a; }
+
+.modal-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 1.6rem;
+  border-top: 1px solid #ececec;
+  background: #f9fafb;
+  border-radius: 0 0 0.9rem 0.9rem;
+}
+
+.modal-cancel {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: none;
+  background: transparent;
+  color: #4b5563;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0.6rem 0.4rem;
+}
+
+.modal-cancel:hover { color: #14161a; }
+.modal-cancel svg { width: 1rem; height: 1rem; }
+
+.modal-confirm {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.85rem 1.3rem;
+  background: #14161a;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.modal-confirm:hover { background: #b80f22; }
+.modal-confirm:disabled { opacity: 0.7; cursor: not-allowed; }
+.modal-confirm svg { width: 1.05rem; height: 1.05rem; }
+
+@media (max-width: 700px) {
+  .modal-foot { flex-direction: column-reverse; align-items: stretch; }
+  .modal-confirm, .modal-cancel { justify-content: center; }
+}

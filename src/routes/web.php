@@ -7,6 +7,8 @@ use App\Http\Controllers\PartController;
 use App\Http\Controllers\RepairOrderController;
 use App\Http\Controllers\RepairOrderWizardController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\WorkQueueController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -86,5 +88,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/nueva-orden', [RepairOrderWizardController::class, 'create'])->name('ordenes.create');
     Route::post('/nueva-orden', [RepairOrderWizardController::class, 'store'])->name('ordenes.store');
     Route::get('/api/ordenes/buscar-cliente', [RepairOrderWizardController::class, 'buscarCliente'])->name('api.ordenes.buscarCliente');
+
+    // Work Queue (cola de prioridad)
+    Route::get('/work-queue', [WorkQueueController::class, 'view'])->name('work-queue.index');
+    Route::get('/api/work-queue', [WorkQueueController::class, 'index'])->name('api.work-queue.index');
+    Route::put('/api/work-queue/{order}/iniciar', [WorkQueueController::class, 'iniciar'])->name('api.work-queue.iniciar');
+    Route::post('/api/work-queue/{order}/entregar', [WorkQueueController::class, 'entregar'])->name('api.work-queue.entregar');
+
+    // Facturación
+    Route::get('/caja-factura', [TransactionController::class, 'view'])->name('caja.index');
+    Route::get('/api/transacciones', [TransactionController::class, 'index'])->name('api.transacciones.index');
+    Route::post('/api/transacciones', [TransactionController::class, 'store'])->name('api.transacciones.store');
+    Route::get('/api/transacciones/{transaction}/pdf', [TransactionController::class, 'download'])->name('api.transacciones.pdf');
 
 });

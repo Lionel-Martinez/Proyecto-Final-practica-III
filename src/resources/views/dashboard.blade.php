@@ -79,10 +79,34 @@
                     </a>
                 @endif
 
+                @if (in_array(auth()->user()->role, ['admin', 'tecnico', 'mostrador']))
+                    <a href="{{ route('work-queue.index') }}" class="access-row">
+                        <span class="access-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"></path><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"></path></svg>
+                        </span>
+                        <span class="access-text">
+                            <strong>Órdenes Activas</strong>
+                            <span>Work Queue</span>
+                        </span>
+                        <svg class="access-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </a>
+                @endif
+
+                @if (in_array(auth()->user()->role, ['admin', 'mostrador']))
+                    <a href="{{ route('caja.index') }}" class="access-row">
+                        <span class="access-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="3"></circle></svg>
+                        </span>
+                        <span class="access-text">
+                            <strong>Caja/Factura</strong>
+                            <span>Transacciones</span>
+                        </span>
+                        <svg class="access-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </a>
+                @endif
+
                 @foreach ([
                     ['label' => 'Prioridades', 'desc' => 'Alertas críticas'],
-                    ['label' => 'Órdenes Activas', 'desc' => 'En progreso'],
-                    ['label' => 'Caja / Factura', 'desc' => 'Transacciones'],
                     ['label' => 'Rentabilidad', 'desc' => 'Métricas KPI'],
                 ] as $pending)
                     <div class="access-row access-row-disabled">

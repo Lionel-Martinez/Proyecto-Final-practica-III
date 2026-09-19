@@ -406,6 +406,19 @@ function renderRepairOrders(orders) {
                             : ''
                     }
                     ${
+                        order.exit_photo_path
+                            ? `
+                                <a href="/storage/${escapeHtml(order.exit_photo_path)}" target="_blank" rel="noopener">
+                                    <img
+                                        src="/storage/${escapeHtml(order.exit_photo_path)}"
+                                        alt="Foto de egreso"
+                                        class="repair-order-photo"
+                                    >
+                                </a>
+                            `
+                            : ''
+                    }
+                    ${
                         order.entry_notes
                             ? `
                                 <p>

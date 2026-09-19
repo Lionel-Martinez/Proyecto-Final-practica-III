@@ -73,7 +73,7 @@
                 </a>
             </li>
             <li data-roles="admin,tecnico">
-                <a href="#">
+                <a href="{{ route('work-queue.index') }}" class="{{ request()->routeIs('work-queue.*') ? 'selected' : '' }}">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
                     <span>Work Queue</span>
                 </a>
@@ -88,6 +88,12 @@
                 <a href="{{ route('proveedores.index') }}" class="{{ request()->routeIs('proveedores.*') ? 'selected' : '' }}">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
                     <span>Proveedores</span>
+                                </a>
+            </li>
+            <li data-roles="admin,mostrador">
+                <a href="{{ route('caja.index') }}" class="{{ request()->routeIs('caja.*') ? 'selected' : '' }}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"></rect><circle cx="12" cy="12" r="3"></circle></svg>
+                    <span>Caja/Factura</span>
                 </a>
             </li>
             <li data-roles="admin">
