@@ -105,9 +105,21 @@
                     </a>
                 @endif
 
+                @if (auth()->user()->role === 'admin')
+                    <a href="{{ route('analytics.index') }}" class="access-row">
+                        <span class="access-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="21" x2="5" y2="12"></line><line x1="12" y1="21" x2="12" y2="7"></line><line x1="19" y1="21" x2="19" y2="15"></line></svg>
+                        </span>
+                        <span class="access-text">
+                            <strong>Rentabilidad</strong>
+                            <span>Métricas reales</span>
+                        </span>
+                        <svg class="access-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </a>
+                @endif
+
                 @foreach ([
                     ['label' => 'Prioridades', 'desc' => 'Alertas críticas'],
-                    ['label' => 'Rentabilidad', 'desc' => 'Métricas KPI'],
                 ] as $pending)
                     <div class="access-row access-row-disabled">
                         <span class="access-icon">

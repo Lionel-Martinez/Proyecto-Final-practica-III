@@ -97,7 +97,7 @@
                 </a>
             </li>
             <li data-roles="admin">
-                <a href="#">
+                <a href="{{ route('analytics.index') }}" class="{{ request()->routeIs('analytics.*') ? 'selected' : '' }}">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="21" x2="5" y2="12"></line><line x1="12" y1="21" x2="12" y2="7"></line><line x1="19" y1="21" x2="19" y2="15"></line></svg>
                     <span>Analytics</span>
                 </a>

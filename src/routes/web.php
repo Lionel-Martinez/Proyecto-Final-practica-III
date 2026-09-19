@@ -98,6 +98,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/api/work-queue/{order}/entregar', [WorkQueueController::class, 'entregar'])->name('api.work-queue.entregar');
     Route::post('/api/work-queue/{order}/cancelar', [WorkQueueController::class, 'cancelar'])->name('api.work-queue.cancelar');
 
+    // Rentabilidad
+    Route::get('/analytics', [\App\Http\Controllers\AnalyticsController::class, 'index'])->name('analytics.index');
+    Route::get('/analytics/pdf', [\App\Http\Controllers\AnalyticsController::class, 'pdf'])->name('analytics.pdf');
+
     // Facturación
     Route::get('/caja-factura', [TransactionController::class, 'view'])->name('caja.index');
     Route::get('/api/transacciones', [TransactionController::class, 'index'])->name('api.transacciones.index');
