@@ -308,3 +308,20 @@
   .modal-foot { flex-direction: column-reverse; align-items: stretch; }
   .modal-confirm, .modal-cancel { justify-content: center; }
 }
+
+/* ---------- botón cancelar orden ---------- */
+
+.cancel-btn {
+  width: 100%;
+  margin-top: 0.5rem;
+  border: 1px solid #f0c6cb;
+  border-radius: 0.4rem;
+  padding: 0.55rem 0.7rem;
+  background: #fff;
+  color: #b80f22;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cancel-btn:hover { background: #fdf3f3; }

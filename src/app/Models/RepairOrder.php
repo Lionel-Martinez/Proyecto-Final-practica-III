@@ -10,7 +10,8 @@ class RepairOrder extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
+        protected $fillable = [
+        'tracking_code',
         'device_id',
         'received_by',
         'received_at',

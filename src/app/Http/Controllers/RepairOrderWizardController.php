@@ -18,6 +18,22 @@ class RepairOrderWizardController extends Controller
         return view('nueva-orden', ['noSidebar' => false]);
     }
 
+    public function confirmacion(RepairOrder $order): View
+    {
+        $order->load('device.customer');
+
+        return view('orden-confirmacion', compact('order'));
+    }
+
+    public function seguimiento(string $trackingCode): View
+    {
+        $order = RepairOrder::where('tracking_code', $trackingCode)
+            ->with('device.customer')
+            ->firstOrFail();
+
+        return view('seguimiento', ['order' => $order, 'noSidebar' => true]);
+    }
+
     public function buscarCliente(Request $request): JsonResponse
     {
         $dni = $request->query('dni');
@@ -105,7 +121,7 @@ class RepairOrderWizardController extends Controller
                 $photoPath = $request->file('foto')->store('ordenes/ingreso', 'public');
             }
 
-            return RepairOrder::create([
+            $order = RepairOrder::create([
                 'device_id' => $device->id,
                 'received_by' => $request->user()->id,
                 'received_at' => now(),
@@ -115,11 +131,15 @@ class RepairOrderWizardController extends Controller
                 'entry_notes' => $entryNotes,
                 'entry_photo_path' => $photoPath,
             ]);
+
+            $order->update([
+                'tracking_code' => 'UL-' . str_pad($order->id, 6, '0', STR_PAD_LEFT),
+            ]);
+
+            return $order;
         });
 
-        return redirect()
-            ->route('clientes.show', $order->device->customer_id)
-            ->with('status', 'Orden #' . $order->id . ' registrada correctamente.');
+        return redirect()->route('ordenes.confirmacion', $order->id);
     }
 
     private function buildEntryNotes(array $checklist, ?string $nota): ?string

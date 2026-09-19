@@ -36,6 +36,29 @@ class WorkQueueController extends Controller
         return response()->json($this->formatOrder($order->fresh('device.customer')));
     }
 
+    public function listo(RepairOrder $order): JsonResponse
+    {
+        abort_unless($order->status === 'en_reparacion', 422, 'La orden no está en reparación.');
+
+        $order->update(['status' => 'listo']);
+
+        return response()->json($this->formatOrder($order->fresh('device.customer')));
+    }
+
+
+    public function cancelar(RepairOrder $order): JsonResponse
+    {
+        abort_if(
+            in_array($order->status, ['entregado', 'cancelado']),
+            422,
+            'Esta orden ya no se puede cancelar.'
+        );
+
+        $order->update(['status' => 'cancelado']);
+
+        return response()->json($this->formatOrder($order->fresh('device.customer')));
+    }
+
     public function entregar(Request $request, RepairOrder $order): JsonResponse
     {
         abort_if(

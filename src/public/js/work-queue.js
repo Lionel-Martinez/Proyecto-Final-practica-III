@@ -60,7 +60,7 @@
         document.getElementById('count-entregada').textContent = grupos.entregada.length;
     }
 
-    function renderColumna(container, orders, columna) {
+        function renderColumna(container, orders, columna) {
         if (!orders.length) {
             container.innerHTML = `<p class="board-empty">Sin órdenes acá por ahora.</p>`;
             return;
@@ -68,24 +68,34 @@
 
         container.innerHTML = orders.map((order) => {
             const esUrgente = order.priority === 'urgente';
+            const esListo = order.status === 'listo';
+            const esEntregado = order.status === 'entregado';
 
             let flag = '';
             if (columna === 'pendiente' && esUrgente) {
                 flag = `<span class="job-flag"><span class="dot"></span>Urgente</span>`;
             } else if (columna === 'progreso') {
                 flag = `<span class="job-flag is-progress">En progreso</span>`;
-            } else if (columna === 'entregada') {
+            } else if (esListo) {
+                flag = `<span class="job-flag is-progress">Pendiente de retiro</span>`;
+            } else if (esEntregado) {
                 flag = `<span class="job-flag is-done">Entregada</span>`;
             }
 
-            let boton = '';
+            let botonPrincipal = '';
             if (columna === 'pendiente') {
-                boton = `<button type="button" class="start-btn" data-action="iniciar" data-order-id="${order.id}">Iniciar reparación</button>`;
+                botonPrincipal = `<button type="button" class="start-btn" data-action="iniciar" data-order-id="${order.id}">Iniciar reparación</button>`;
             } else if (columna === 'progreso') {
-                boton = `<button type="button" class="start-btn" data-action="entregar" data-order-id="${order.id}">Finalizar y entregar</button>`;
+                botonPrincipal = `<button type="button" class="start-btn" data-action="listo" data-order-id="${order.id}">Marcar como listo</button>`;
+            } else if (esListo) {
+                botonPrincipal = `<button type="button" class="start-btn" data-action="entregar" data-order-id="${order.id}">Confirmar entrega</button>`;
             } else {
-                boton = `<button type="button" class="start-btn" disabled>Entregada</button>`;
+                botonPrincipal = `<button type="button" class="start-btn" disabled>Entregada</button>`;
             }
+
+            const botonCancelar = (columna === 'pendiente' || columna === 'progreso')
+                ? `<button type="button" class="cancel-btn" data-action="cancelar" data-order-id="${order.id}">Cancelar orden</button>`
+                : '';
 
             return `
                 <article class="job-card status-${columna} priority-${escapeHtml(order.priority)}">
@@ -100,14 +110,15 @@
                     </p>
                     <div class="job-card-foot">
                         <span class="job-date">Ingreso: ${formatFecha(order.received_at)}</span>
-                        ${boton}
+                        ${botonPrincipal}
+                        ${botonCancelar}
                     </div>
                 </article>
             `;
         }).join('');
     }
 
-    board?.addEventListener('click', async (event) => {
+        board?.addEventListener('click', async (event) => {
         const btn = event.target.closest('[data-action]');
         if (!btn) return;
 
@@ -115,26 +126,34 @@
         const order = ORDERS.find((o) => o.id === orderId);
 
         if (btn.dataset.action === 'iniciar') {
-            await iniciarOrden(order, btn);
+            await cambiarEstadoSimple(order, btn, 'iniciar', 'PUT', 'Iniciando...', 'Iniciar reparación');
+        } else if (btn.dataset.action === 'listo') {
+            await cambiarEstadoSimple(order, btn, 'listo', 'PUT', 'Guardando...', 'Marcar como listo');
+        } else if (btn.dataset.action === 'cancelar') {
+            if (confirm(`¿Cancelar la orden #${order.id}? El equipo se devuelve al cliente sin reparar.`)) {
+                await cambiarEstadoSimple(order, btn, 'cancelar', 'POST', 'Cancelando...', 'Cancelar orden');
+            }
         } else if (btn.dataset.action === 'entregar') {
             abrirModalEntrega(order);
         }
     });
 
-    async function iniciarOrden(order, btn) {
+    async function cambiarEstadoSimple(order, btn, accion, metodo, textoCargando, textoOriginal) {
         btn.disabled = true;
-        btn.textContent = 'Iniciando...';
+        btn.textContent = textoCargando;
 
         try {
-            const response = await fetch(`${API_URL}/${order.id}/iniciar`, {
-                method: 'PUT',
+            const response = await fetch(`${API_URL}/${order.id}/${accion}`, {
+                method: metodo,
                 headers: {
                     'Accept': 'application/json',
                     'X-CSRF-TOKEN': getCsrfToken(),
                 },
             });
 
-            if (!response.ok) throw new Error('No se pudo iniciar la reparación.');
+            const result = await response.json();
+
+            if (!response.ok) throw new Error(result.message || 'No se pudo actualizar la orden.');
 
             await loadBoard();
 
@@ -142,7 +161,7 @@
             console.error(error);
             alert(error.message);
             btn.disabled = false;
-            btn.textContent = 'Iniciar reparación';
+            btn.textContent = textoOriginal;
         }
     }
 

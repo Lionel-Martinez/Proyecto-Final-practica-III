@@ -88,12 +88,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/nueva-orden', [RepairOrderWizardController::class, 'create'])->name('ordenes.create');
     Route::post('/nueva-orden', [RepairOrderWizardController::class, 'store'])->name('ordenes.store');
     Route::get('/api/ordenes/buscar-cliente', [RepairOrderWizardController::class, 'buscarCliente'])->name('api.ordenes.buscarCliente');
+    Route::get('/nueva-orden/{order}/confirmacion', [RepairOrderWizardController::class, 'confirmacion'])->name('ordenes.confirmacion');
 
     // Work Queue (cola de prioridad)
     Route::get('/work-queue', [WorkQueueController::class, 'view'])->name('work-queue.index');
     Route::get('/api/work-queue', [WorkQueueController::class, 'index'])->name('api.work-queue.index');
     Route::put('/api/work-queue/{order}/iniciar', [WorkQueueController::class, 'iniciar'])->name('api.work-queue.iniciar');
     Route::post('/api/work-queue/{order}/entregar', [WorkQueueController::class, 'entregar'])->name('api.work-queue.entregar');
+    Route::put('/api/work-queue/{order}/iniciar', [WorkQueueController::class, 'iniciar'])->name('api.work-queue.iniciar');
+    Route::put('/api/work-queue/{order}/listo', [WorkQueueController::class, 'listo'])->name('api.work-queue.listo');
+    Route::post('/api/work-queue/{order}/entregar', [WorkQueueController::class, 'entregar'])->name('api.work-queue.entregar');
+    Route::post('/api/work-queue/{order}/cancelar', [WorkQueueController::class, 'cancelar'])->name('api.work-queue.cancelar');
 
     // Facturación
     Route::get('/caja-factura', [TransactionController::class, 'view'])->name('caja.index');
@@ -102,3 +107,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/api/transacciones/{transaction}/pdf', [TransactionController::class, 'download'])->name('api.transacciones.pdf');
 
 });
+
+Route::get('/seguimiento/{trackingCode}', [\App\Http\Controllers\RepairOrderWizardController::class, 'seguimiento'])->name('ordenes.seguimiento');
