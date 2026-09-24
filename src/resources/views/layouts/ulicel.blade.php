@@ -66,10 +66,16 @@
                     <span>Clientes</span>
                 </a>
             </li>
-            <li data-roles="admin,tecnico,mostrador">
-                <a href="{{ route('ordenes.create') }}" class="{{ request()->routeIs('ordenes.*') ? 'selected' : '' }}">
+                        <li data-roles="admin,tecnico,mostrador">
+                <a href="{{ route('ordenes.create') }}" class="{{ request()->routeIs('ordenes.create') || request()->routeIs('ordenes.confirmacion') ? 'selected' : '' }}">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 1 1-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 1 1 5.4-5.4z"></path></svg>
-                    <span>Repair Orders</span>
+                    <span>Nueva Orden</span>
+                </a>
+            </li>
+            <li data-roles="admin,tecnico,mostrador">
+                <a href="{{ route('ordenes-activas.index') }}" class="{{ request()->routeIs('ordenes-activas.*') ? 'selected' : '' }}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"></path><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"></path></svg>
+                    <span>Órdenes Activas</span>
                 </a>
             </li>
             <li data-roles="admin,tecnico">

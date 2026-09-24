@@ -79,14 +79,27 @@
                     </a>
                 @endif
 
-                @if (in_array(auth()->user()->role, ['admin', 'tecnico', 'mostrador']))
+                @if (in_array(auth()->user()->role, ['admin', 'tecnico']))
                     <a href="{{ route('work-queue.index') }}" class="access-row">
+                        <span class="access-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                        </span>
+                        <span class="access-text">
+                            <strong>Work Queue</strong>
+                            <span>Tablero del técnico</span>
+                        </span>
+                        <svg class="access-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </a>
+                @endif
+
+                @if (in_array(auth()->user()->role, ['admin', 'tecnico', 'mostrador']))
+                    <a href="{{ route('ordenes-activas.index') }}" class="access-row">
                         <span class="access-icon">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"></path><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"></path></svg>
                         </span>
                         <span class="access-text">
                             <strong>Órdenes Activas</strong>
-                            <span>Work Queue</span>
+                            <span>Buscar por cliente, equipo o estado</span>
                         </span>
                         <svg class="access-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                     </a>
@@ -117,21 +130,6 @@
                         <svg class="access-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                     </a>
                 @endif
-
-                @foreach ([
-                    ['label' => 'Prioridades', 'desc' => 'Alertas críticas'],
-                ] as $pending)
-                    <div class="access-row access-row-disabled">
-                        <span class="access-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                        </span>
-                        <span class="access-text">
-                            <strong>{{ $pending['label'] }}</strong>
-                            <span>{{ $pending['desc'] }}</span>
-                        </span>
-                        <span class="access-badge access-badge-muted">Próximamente</span>
-                    </div>
-                @endforeach
 
             </div>
 
@@ -191,16 +189,6 @@
 
 @push('styles')
     <style>
-        .access-row-disabled {
-            opacity: 0.55;
-            cursor: default;
-        }
-
-        .access-badge-muted {
-            background: #f1f2f4;
-            color: #6b7280;
-        }
-
         .activity-empty {
             color: #8b8f97;
             font-size: 0.85rem;

@@ -98,6 +98,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/api/work-queue/{order}/entregar', [WorkQueueController::class, 'entregar'])->name('api.work-queue.entregar');
     Route::post('/api/work-queue/{order}/cancelar', [WorkQueueController::class, 'cancelar'])->name('api.work-queue.cancelar');
 
+    // Órdenes Activas
+    Route::get('/ordenes-activas', [\App\Http\Controllers\ActiveOrdersController::class, 'view'])->name('ordenes-activas.index');
+    Route::get('/api/ordenes-activas', [\App\Http\Controllers\ActiveOrdersController::class, 'index'])->name('api.ordenes-activas.index');
+
     // Rentabilidad
     Route::get('/analytics', [\App\Http\Controllers\AnalyticsController::class, 'index'])->name('analytics.index');
     Route::get('/analytics/pdf', [\App\Http\Controllers\AnalyticsController::class, 'pdf'])->name('analytics.pdf');
