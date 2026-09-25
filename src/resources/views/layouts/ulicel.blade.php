@@ -35,7 +35,7 @@
         <a href="#" class="icons-header" aria-label="Ayuda">
             <img src="/img/menu principal/question.svg" alt="ayuda">
         </a>
-        <a href="#" class="icons-header" aria-label="Notificaciones">
+        <a href="{{ route('notificaciones.index') }}" class="icons-header" aria-label="Notificaciones">
             <img src="/img/menu principal/notification.svg" alt="notificaciones">
             <span class="notif-dot" id="notif-dot" hidden></span>
         </a>
@@ -136,5 +136,16 @@
 
 <script src="/js/menu principal.js"></script>
 @stack('scripts')
+<script>
+    fetch('{{ route('api.notificaciones.index') }}', { headers: { 'Accept': 'application/json' } })
+        .then((r) => r.json())
+        .then((data) => {
+            const dot = document.getElementById('notif-dot');
+            if (dot && Array.isArray(data) && data.length > 0) {
+                dot.hidden = false;
+            }
+        })
+        .catch(() => {});
+</script>
 </body>
 </html>
