@@ -106,6 +106,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/analytics', [\App\Http\Controllers\AnalyticsController::class, 'index'])->name('analytics.index');
     Route::get('/analytics/pdf', [\App\Http\Controllers\AnalyticsController::class, 'pdf'])->name('analytics.pdf');
 
+    // Buscar
+    Route::get('/buscar', [\App\Http\Controllers\SearchController::class, 'view'])->name('buscar.index');
+    Route::get('/api/buscar', [\App\Http\Controllers\SearchController::class, 'index'])->name('api.buscar.index');
+
     // Admin
     Route::get('/admin', [\App\Http\Controllers\AdminController::class, 'index'])->name('admin.index');
     Route::post('/admin/taller', [\App\Http\Controllers\AdminController::class, 'updateSettings'])->name('admin.settings.update');

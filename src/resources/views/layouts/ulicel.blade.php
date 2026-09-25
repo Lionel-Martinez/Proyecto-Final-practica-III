@@ -29,7 +29,7 @@
     </div>
 
     <div class="derecha">
-        <a href="#" class="icons-header" aria-label="Buscar">
+        <a href="{{ route('buscar.index') }}" class="icons-header" aria-label="Buscar">
             <img src="/img/menu principal/search.svg" alt="buscar">
         </a>
         <a href="#" class="icons-header" aria-label="Ayuda">

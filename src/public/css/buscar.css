@@ -1,0 +1,38 @@
+/* Se carga después de "menu principal.css". */
+
+.breadcrumb { margin: 0 0 1rem; font-family: "Courier New", monospace; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: #9aa0a8; }
+.breadcrumb a { color: #9aa0a8; text-decoration: none; }
+.breadcrumb a:hover { color: #14161a; }
+.breadcrumb strong { color: #14161a; }
+
+.buscar-head { margin-bottom: 1.8rem; }
+
+.buscar-box { display: flex; align-items: center; gap: 0.8rem; background: #fff; border: 1px solid #e4e6ea; border-radius: 0.7rem; padding: 0 1.2rem; height: 3.4rem; max-width: 34rem; }
+.buscar-box:focus-within { border-color: #b80f22; }
+.buscar-box svg { width: 1.2rem; height: 1.2rem; color: #9aa0a8; flex-shrink: 0; }
+.buscar-box input { flex: 1; border: none; outline: none; background: transparent; font-size: 1.05rem; color: #14161a; }
+.buscar-box input::placeholder { color: #b3b8bf; }
+.buscar-hint { margin: 0.6rem 0 0; font-family: "Courier New", monospace; font-size: 0.78rem; color: #9aa0a8; }
+
+.buscar-empty { padding: 3rem; text-align: center; color: #8b8f97; border: 1px dashed #dcdfe4; border-radius: 0.7rem; }
+.buscar-grupo { margin-bottom: 1.4rem; }
+.buscar-grupo-title { display: flex; align-items: center; gap: 0.5rem; margin: 0 0 0.7rem; font-family: "Courier New", monospace; font-size: 0.72rem; letter-spacing: 0.07em; text-transform: uppercase; color: #8b8f97; font-weight: 700; }
+.buscar-grupo-title .count { background: #f4f5f6; color: #6b7280; padding: 0.1rem 0.5rem; border-radius: 999px; }
+
+.buscar-resultado { display: flex; align-items: center; gap: 0.9rem; background: #fff; border: 1px solid #ececec; border-left: 3px solid #14161a; border-radius: 0.6rem; padding: 0.85rem 1.1rem; margin-bottom: 0.5rem; text-decoration: none; color: #14161a; transition: border-color 0.15s ease, transform 0.15s ease; }
+.buscar-resultado:hover { border-left-color: #b80f22; transform: translateX(3px); }
+
+.buscar-icon { width: 2.3rem; height: 2.3rem; flex-shrink: 0; border-radius: 0.5rem; background: #f4f5f6; color: #14161a; display: flex; align-items: center; justify-content: center; }
+.buscar-icon svg { width: 1.1rem; height: 1.1rem; }
+.buscar-texto { flex: 1; min-width: 0; }
+.buscar-texto strong { display: block; font-size: 0.92rem; font-weight: 700; }
+.buscar-texto span { font-size: 0.8rem; color: #8b8f97; }
+
+.buscar-badge { font-size: 0.72rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 999px; flex-shrink: 0; white-space: nowrap; }
+.badge-recibido { background: #fdf3e2; color: #b45309; }
+.badge-en_reparacion { background: #e6f0ff; color: #1d4ed8; }
+.badge-listo { background: #e7f7ec; color: #1a9d4b; }
+.badge-entregado { background: #e7f7ec; color: #1a9d4b; }
+.badge-cancelado { background: #f1f2f4; color: #6b7280; }
+
+@media (max-width: 560px) { .buscar-box { max-width: none; } }
