@@ -106,6 +106,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/analytics', [\App\Http\Controllers\AnalyticsController::class, 'index'])->name('analytics.index');
     Route::get('/analytics/pdf', [\App\Http\Controllers\AnalyticsController::class, 'pdf'])->name('analytics.pdf');
 
+    // Catálogo
+    Route::get('/catalogo', [\App\Http\Controllers\ServiceController::class, 'view'])->name('catalogo.index');
+    Route::get('/api/servicios', [\App\Http\Controllers\ServiceController::class, 'index'])->name('api.servicios.index');
+    Route::post('/api/servicios', [\App\Http\Controllers\ServiceController::class, 'store'])->name('api.servicios.store');
+    Route::put('/api/servicios/{service}', [\App\Http\Controllers\ServiceController::class, 'update'])->name('api.servicios.update');
+    Route::delete('/api/servicios/{service}', [\App\Http\Controllers\ServiceController::class, 'destroy'])->name('api.servicios.destroy');
+    Route::post('/api/servicios/importar', [\App\Http\Controllers\ServiceController::class, 'import'])->name('api.servicios.import');
+
     // Notificaciones
     Route::get('/notificaciones', [\App\Http\Controllers\NotificationController::class, 'view'])->name('notificaciones.index');
     Route::get('/api/notificaciones', [\App\Http\Controllers\NotificationController::class, 'index'])->name('api.notificaciones.index');
