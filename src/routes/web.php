@@ -106,6 +106,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/analytics', [\App\Http\Controllers\AnalyticsController::class, 'index'])->name('analytics.index');
     Route::get('/analytics/pdf', [\App\Http\Controllers\AnalyticsController::class, 'pdf'])->name('analytics.pdf');
 
+    // Ayuda
+    Route::get('/ayuda', function () {
+        return view('ayuda');
+    })->name('ayuda.index');
+
     // Presupuesto
     Route::get('/presupuesto', [\App\Http\Controllers\QuoteController::class, 'view'])->name('presupuesto.index');
 

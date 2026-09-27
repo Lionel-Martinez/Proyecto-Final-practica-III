@@ -32,7 +32,7 @@
         <a href="{{ route('buscar.index') }}" class="icons-header" aria-label="Buscar">
             <img src="/img/menu principal/search.svg" alt="buscar">
         </a>
-        <a href="#" class="icons-header" aria-label="Ayuda">
+        <a href="{{ route('ayuda.index') }}" class="icons-header" aria-label="Ayuda">
             <img src="/img/menu principal/question.svg" alt="ayuda">
         </a>
         <a href="{{ route('notificaciones.index') }}" class="icons-header" aria-label="Notificaciones">
