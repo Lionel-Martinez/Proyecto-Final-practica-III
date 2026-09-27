@@ -106,6 +106,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/analytics', [\App\Http\Controllers\AnalyticsController::class, 'index'])->name('analytics.index');
     Route::get('/analytics/pdf', [\App\Http\Controllers\AnalyticsController::class, 'pdf'])->name('analytics.pdf');
 
+    // Presupuesto
+    Route::get('/presupuesto', [\App\Http\Controllers\QuoteController::class, 'view'])->name('presupuesto.index');
+
     // Catálogo
     Route::get('/catalogo', [\App\Http\Controllers\ServiceController::class, 'view'])->name('catalogo.index');
     Route::get('/api/servicios', [\App\Http\Controllers\ServiceController::class, 'index'])->name('api.servicios.index');
