@@ -120,6 +120,8 @@ $order->update($updates);
             'warranty_code' => $order->warranty_code,
             'warranty_expires_at' => $order->warranty_expires_at?->toDateString(),
             'entry_notes' => $order->entry_notes,
+            'estimated_price' => $order->estimated_price !== null ? (float) $order->estimated_price : null,
+            'service_name' => $order->service?->name,
         ];
     }
 }

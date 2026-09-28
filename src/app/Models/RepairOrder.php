@@ -10,9 +10,11 @@ class RepairOrder extends Model
 {
     use HasFactory;
 
-        protected $fillable = [
+    protected $fillable = [
         'tracking_code',
         'device_id',
+        'service_id',
+        'estimated_price',
         'received_by',
         'received_at',
         'reported_problem',
@@ -29,11 +31,17 @@ class RepairOrder extends Model
     protected $casts = [
         'received_at' => 'datetime',
         'warranty_expires_at' => 'date',
+        'estimated_price' => 'decimal:2',
     ];
 
     public function device(): BelongsTo
     {
         return $this->belongsTo(Device::class);
+    }
+
+    public function service(): BelongsTo
+    {
+        return $this->belongsTo(Service::class);
     }
 
     public function receivedBy(): BelongsTo

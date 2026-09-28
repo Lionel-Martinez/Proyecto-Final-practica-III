@@ -18,6 +18,7 @@
     let currentStep = 1;
     let maxStepReached = 1;
     let clienteExistenteId = null;
+    let CATALOGO_REV = [];
 
     function goToStep(step) {
         currentStep = step;
@@ -78,12 +79,33 @@
             });
         }
 
+            if (step === 3) {
+            const hasPhoto = photoInput.files.length > 0;
+            document.getElementById('photo-error').hidden = hasPhoto;
+            if (!hasPhoto) valid = false;
+        }
+
+        return valid;
+    }
+
+    function fillReview() {
+
         return valid;
     }
 
     function fillReview() {
         document.getElementById('review-nombre').textContent =
             document.getElementById('nombre').value.trim() || '—';
+                const servicioSelectRev = document.getElementById('servicio_id');
+                const reviewPrecio = document.getElementById('review-precio');
+                const servicioElegido = CATALOGO_REV.find((s) => String(s.id) === servicioSelectRev.value);
+
+        if (servicioElegido) {
+            reviewPrecio.textContent = `Presupuesto de referencia: ${servicioElegido.name} — $${Number(servicioElegido.reference_price).toLocaleString('es-AR', { minimumFractionDigits: 2 })}`;
+            reviewPrecio.hidden = false;
+        } else {
+            reviewPrecio.hidden = true;
+        }
 
         document.getElementById('review-dni').textContent =
             'DNI: ' + (document.getElementById('dni').value.trim() || 'sin registrar');
@@ -249,6 +271,53 @@
         dropzonePreview.hidden = true;
         dropzoneEmpty.hidden = false;
         dropzoneRemove.hidden = true;
+    });
+
+        /* ---------- servicio a presupuestar ---------- */
+
+    const servicioSelect = document.getElementById('servicio_id');
+    const precioEstimado = document.getElementById('precio-estimado');
+    let CATALOGO = [];
+
+    const currency = (n) => `$${Number(n ?? 0).toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+    fetch('/api/servicios', { headers: { 'Accept': 'application/json' } })
+        .then((r) => r.json())
+        .then((data) => {
+            CATALOGO = data;
+            CATALOGO_REV = data;
+
+            const porCategoria = {};
+            data.forEach((s) => {
+                porCategoria[s.category] = porCategoria[s.category] || [];
+                porCategoria[s.category].push(s);
+            });
+
+            Object.keys(porCategoria).forEach((categoria) => {
+                const optgroup = document.createElement('optgroup');
+                optgroup.label = categoria;
+
+                porCategoria[categoria].forEach((s) => {
+                    const option = document.createElement('option');
+                    option.value = s.id;
+                    option.textContent = `${s.name} — ${currency(s.reference_price)}`;
+                    optgroup.appendChild(option);
+                });
+
+                servicioSelect.appendChild(optgroup);
+            });
+        })
+        .catch(() => {});
+
+    servicioSelect?.addEventListener('change', () => {
+        const servicio = CATALOGO.find((s) => String(s.id) === servicioSelect.value);
+
+        if (servicio) {
+            precioEstimado.textContent = `Precio de referencia: ${currency(servicio.reference_price)}`;
+            precioEstimado.hidden = false;
+        } else {
+            precioEstimado.hidden = true;
+        }
     });
 
     goToStep(1);

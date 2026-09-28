@@ -427,6 +427,20 @@ function renderRepairOrders(orders) {
                             `
                             : ''
                     }
+                    <a href="/nueva-orden/${order.id}/confirmacion" target="_blank" rel="noopener" class="warranty-link">
+                        🧾 Ver comprobante de ingreso
+                    </a>
+                    ${
+                        order.estimated_price !== null && order.estimated_price !== undefined
+                            ? `
+                                <p>
+                                    <strong>Presupuesto de referencia:</strong>
+                                    ${escapeHtml(order.service_name ?? 'Servicio')} —
+                                    $${Number(order.estimated_price).toLocaleString('es-AR', { minimumFractionDigits: 2 })}
+                                </p>
+                            `
+                            : ''
+                    }
                     ${
                         order.entry_notes
                             ? `

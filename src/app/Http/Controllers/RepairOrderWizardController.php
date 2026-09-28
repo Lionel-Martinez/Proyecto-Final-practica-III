@@ -73,10 +73,11 @@ class RepairOrderWizardController extends Controller
             'marca' => ['required', 'string', 'max:50'],
             'modelo' => ['required', 'string', 'max:80'],
             'problema' => ['required', 'string', 'max:280'],
+            'servicio_id' => ['nullable', 'integer', 'exists:services,id'],
             'checklist' => ['nullable', 'array'],
             'checklist.*' => ['string'],
             'nota' => ['nullable', 'string'],
-            'foto' => ['nullable', 'image', 'max:5120'],
+            'foto' => ['required', 'image', 'max:5120'],
         ]);
 
         $order = DB::transaction(function () use ($validated, $request) {
@@ -121,8 +122,14 @@ class RepairOrderWizardController extends Controller
                 $photoPath = $request->file('foto')->store('ordenes/ingreso', 'public');
             }
 
+            $servicio = ! empty($validated['servicio_id'])
+                ? \App\Models\Service::find($validated['servicio_id'])
+                : null;
+
             $order = RepairOrder::create([
                 'device_id' => $device->id,
+                'service_id' => $servicio?->id,
+                'estimated_price' => $servicio?->reference_price,
                 'received_by' => $request->user()->id,
                 'received_at' => now(),
                 'reported_problem' => $validated['problema'],

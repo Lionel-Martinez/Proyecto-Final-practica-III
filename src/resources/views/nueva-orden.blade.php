@@ -103,6 +103,14 @@
                         <textarea id="problema" name="problema" rows="3" placeholder="Describí el problema informado por el cliente..."></textarea>
                         <span class="field-error">Describí el problema reportado.</span>
                     </div>
+
+                    <div class="field">
+                        <label for="servicio_id">Servicio a presupuestar (opcional)</label>
+                        <select id="servicio_id" name="servicio_id">
+                            <option value="">Sin presupuestar por ahora</option>
+                        </select>
+                        <p id="precio-estimado" style="margin:0.5rem 0 0; font-size:0.85rem; font-weight:700; color:#1a9d4b;" hidden></p>
+                    </div>
                 </div>
 
                 {{-- PASO 3: FOTO Y CHECKLIST --}}
@@ -117,7 +125,7 @@
                                 <strong>Capturar / Subir foto</strong>
                                 <span>Evidencia visual del estado físico actual del dispositivo</span>
                             </div>
-                            <img class="dropzone-preview" id="dropzone-preview" hidden>
+                            <img class="dropzone-preview" id="dropzone-preview" hidden alt="">
                             <button type="button" class="dropzone-remove" id="dropzone-remove" hidden aria-label="Quitar foto">×</button>
                         </div>
 
@@ -136,6 +144,8 @@
                             </div>
                         </div>
                     </div>
+
+                    <p class="form-alert" id="photo-error" hidden>La foto de ingreso es obligatoria: es la evidencia del estado físico del equipo al recibirlo.</p>
                 </div>
 
                 {{-- PASO 4: REVISIÓN --}}
@@ -154,6 +164,7 @@
                             <p class="review-block-title">Equipo</p>
                             <p id="review-equipo">—</p>
                             <p id="review-problema">—</p>
+                            <p id="review-precio" style="font-weight:700; color:#1a9d4b;" hidden></p>
                         </div>
                         <div class="review-block">
                             <p class="review-block-title">Estado al ingreso</p>
@@ -167,7 +178,7 @@
 
                 <div class="wizard-nav">
                     <button type="button" class="btn-ghost" id="btn-back" hidden>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 19"></polyline></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
                         Volver
                     </button>
                     <button type="button" class="btn-solid" id="btn-next">
