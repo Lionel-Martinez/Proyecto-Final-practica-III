@@ -63,4 +63,42 @@ class SupplierController extends Controller
             'message' => 'Proveedor eliminado correctamente.',
         ]);
     }
+        public function import(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'proveedores' => ['required', 'array'],
+            'proveedores.*.name' => ['required', 'string', 'max:100'],
+            'proveedores.*.contact_name' => ['nullable', 'string', 'max:100'],
+            'proveedores.*.phone' => ['nullable', 'string', 'max:30'],
+            'proveedores.*.email' => ['nullable', 'string', 'max:150'],
+            'proveedores.*.address' => ['nullable', 'string', 'max:150'],
+        ]);
+
+        $creados = 0;
+        $actualizados = 0;
+
+        foreach ($validated['proveedores'] as $fila) {
+            $supplier = Supplier::where('name', $fila['name'])->first();
+
+            $datos = [
+                'contact_name' => $fila['contact_name'] ?? null,
+                'phone' => $fila['phone'] ?? null,
+                'email' => $fila['email'] ?? null,
+                'address' => $fila['address'] ?? null,
+            ];
+
+            if ($supplier) {
+                $supplier->update($datos);
+                $actualizados++;
+            } else {
+                Supplier::create(array_merge(['name' => $fila['name']], $datos));
+                $creados++;
+            }
+        }
+
+        return response()->json([
+            'creados' => $creados,
+            'actualizados' => $actualizados,
+        ]);
+    }
 }

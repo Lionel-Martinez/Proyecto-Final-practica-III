@@ -396,4 +396,65 @@ supplierForm?.addEventListener(
 );
 
 
+document.getElementById('btn-importar-proveedores')?.addEventListener('click', () => {
+    document.getElementById('proveedores-excel-input').click();
+});
+
+document.getElementById('proveedores-excel-input')?.addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+        try {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const sheet = workbook.Sheets[workbook.SheetNames[0]];
+            const rows = XLSX.utils.sheet_to_json(sheet);
+
+            const proveedores = rows.map((row) => ({
+                name: String(row.Nombre ?? row.nombre ?? '').trim(),
+                contact_name: String(row.Contacto ?? row.contacto ?? '').trim() || null,
+                phone: String(row['Teléfono'] ?? row.Telefono ?? row.telefono ?? '').trim() || null,
+                email: String(row.Email ?? row.email ?? '').trim() || null,
+                address: String(row['Dirección'] ?? row.Direccion ?? row.direccion ?? '').trim() || null,
+            })).filter((p) => p.name);
+
+            if (!proveedores.length) {
+                alert('No se encontraron filas válidas. Revisá que el Excel tenga la columna Nombre.');
+                return;
+            }
+
+            const response = await fetch(`${API_URL}/importar`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document
+                        .querySelector('meta[name="csrf-token"]')
+                        ?.getAttribute('content'),
+                },
+                body: JSON.stringify({ proveedores }),
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                alert(result.message || 'No se pudo importar el archivo.');
+                return;
+            }
+
+            alert(`Listo: ${result.creados} nuevos, ${result.actualizados} actualizados.`);
+            await loadSuppliers();
+
+        } catch (error) {
+            console.error(error);
+            alert('No se pudo leer el archivo. Verificá el formato.');
+        } finally {
+            event.target.value = '';
+        }
+    };
+    reader.readAsArrayBuffer(file);
+});
+
 loadSuppliers();

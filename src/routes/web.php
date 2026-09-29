@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/{supplier}', [SupplierController::class, 'show'])->name('api.proveedores.show');
         Route::put('/{supplier}', [SupplierController::class, 'update'])->name('api.proveedores.update');
         Route::delete('/{supplier}', [SupplierController::class, 'destroy'])->name('api.proveedores.destroy');
+        Route::post('/importar', [SupplierController::class, 'import'])->name('api.proveedores.import');
     });
 
     // Pantalla de clientes
