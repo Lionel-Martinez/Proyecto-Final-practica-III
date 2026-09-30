@@ -148,3 +148,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/seguimiento/{trackingCode}', [\App\Http\Controllers\RepairOrderWizardController::class, 'seguimiento'])->name('ordenes.seguimiento');
 
 Route::get('/garantia/{warrantyCode}', [\App\Http\Controllers\WarrantyController::class, 'show'])->name('garantia.show');
+
+
+Route::get('/buscar-orden', [\App\Http\Controllers\PublicOrderLookupController::class, 'view'])->name('buscar-orden.index');
+Route::get('/api/buscar-orden', [\App\Http\Controllers\PublicOrderLookupController::class, 'search'])->name('api.buscar-orden.search');

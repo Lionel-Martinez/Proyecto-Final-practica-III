@@ -123,6 +123,8 @@
 
         <p class="refresh-hint">Volvé a abrir este link cuando quieras para ver el estado actualizado.</p>
 
+        <p class="refresh-hint">¿Perdiste este link? <a href="{{ route('buscar-orden.index') }}" style="color:#b80f22;">Buscalo con tu DNI</a>.</p>
+
     </div>
 
 </body>
