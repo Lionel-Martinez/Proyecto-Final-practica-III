@@ -74,6 +74,9 @@ class RepairOrderController extends Controller
         'technical_diagnosis' => ['nullable', 'string'],
         'entry_notes' => ['nullable', 'string'],
     ]);
+    $estadoAnterior = $order->status;
+    $diagnosticoAnterior = $order->technical_diagnosis;
+    $notasAnteriores = $order->entry_notes;
 
     $updates = [
     'status' => $validated['status'],
@@ -88,7 +91,39 @@ if (array_key_exists('entry_notes', $validated)) {
 }
 
 $order->update($updates);
+    if ($estadoAnterior !== $order->status) {
+    $order->updates()->create([
+        'user_id' => $request->user()->id,
+        'status' => $order->status,
+        'message' => 'El estado de la orden cambió de '
+            . $estadoAnterior
+            . ' a '
+            . $order->status
+            . '.',
+    ]);
+}
 
+if (
+    array_key_exists('technical_diagnosis', $validated)
+    && $diagnosticoAnterior !== $order->technical_diagnosis
+) {
+    $order->updates()->create([
+        'user_id' => $request->user()->id,
+        'status' => $order->status,
+        'message' => 'Se actualizó el diagnóstico técnico.',
+    ]);
+}
+
+if (
+    array_key_exists('entry_notes', $validated)
+    && $notasAnteriores !== $order->entry_notes
+) {
+    $order->updates()->create([
+        'user_id' => $request->user()->id,
+        'status' => $order->status,
+        'message' => 'Se actualizaron las notas de ingreso.',
+    ]);
+}
     $order->load('device');
 
     return response()->json(

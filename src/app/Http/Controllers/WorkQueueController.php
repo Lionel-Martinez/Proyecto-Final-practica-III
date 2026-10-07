@@ -27,34 +27,51 @@ class WorkQueueController extends Controller
         );
     }
 
-    public function iniciar(RepairOrder $order): JsonResponse
-    {
-        abort_unless($order->status === 'recibido', 422, 'La orden no está pendiente.');
+    public function iniciar(Request $request, RepairOrder $order): JsonResponse
+{
+    abort_unless($order->status === 'recibido', 422, 'La orden no está pendiente.');
 
-        $order->update(['status' => 'en_reparacion']);
+    $order->update(['status' => 'en_reparacion']);
 
-        return response()->json($this->formatOrder($order->fresh('device.customer')));
-    }
+    $order->updates()->create([
+        'user_id' => $request->user()->id,
+        'status' => 'en_reparacion',
+        'message' => 'Se inició la reparación del equipo.',
+    ]);
 
-    public function listo(RepairOrder $order): JsonResponse
+    return response()->json($this->formatOrder($order->fresh('device.customer')));
+}
+
+    public function listo(Request $request, RepairOrder $order): JsonResponse
     {
         abort_unless($order->status === 'en_reparacion', 422, 'La orden no está en reparación.');
 
         $order->update(['status' => 'listo']);
 
+        $order->updates()->create([
+            'user_id' => $request->user()->id,
+            'status' => 'listo',
+            'message' => 'La reparación terminó y el equipo está pendiente de retiro.',
+        ]);
+
         return response()->json($this->formatOrder($order->fresh('device.customer')));
     }
 
 
-    public function cancelar(RepairOrder $order): JsonResponse
+    public function cancelar(Request $request, RepairOrder $order): JsonResponse
     {
         abort_if(
             in_array($order->status, ['entregado', 'cancelado']),
             422,
             'Esta orden ya no se puede cancelar.'
         );
-
         $order->update(['status' => 'cancelado']);
+
+        $order->updates()->create([
+            'user_id' => $request->user()->id,
+            'status' => 'cancelado',
+            'message' => 'La orden fue cancelada.',
+        ]);
 
         return response()->json($this->formatOrder($order->fresh('device.customer')));
     }
@@ -79,6 +96,11 @@ class WorkQueueController extends Controller
             'warranty_code' => 'GAR-' . str_pad($order->id, 6, '0', STR_PAD_LEFT),
             'warranty_expires_at' => now()->addDays(90),
         ]);
+        $order->updates()->create([
+            'user_id' => $request->user()->id,
+            'status' => 'entregado',
+            'message' => 'El equipo fue entregado al cliente.',
+        ]);
 
         return response()->json($this->formatOrder($order->fresh('device.customer')));
     }
@@ -91,6 +113,17 @@ class WorkQueueController extends Controller
             'listo', 'entregado' => 'entregada',
             default => 'pendiente',
         };
+        $diasDesdeIngreso = $order->received_at
+    ? $order->received_at->startOfDay()->diffInDays(now()->startOfDay())
+    : 0;
+
+$situacion = match (true) {
+    $order->status === 'entregado' => 'entregado',
+    $order->status === 'listo' && $diasDesdeIngreso >= 10 => 'olvidada',
+    $order->status === 'listo' => 'retiro_pendiente',
+    $order->status === 'en_reparacion' => 'en_reparacion',
+    default => 'pendiente',
+};
 
         return [
             'id' => $order->id,
@@ -108,6 +141,9 @@ class WorkQueueController extends Controller
             'equipo' => $order->device
                 ? trim($order->device->brand . ' ' . $order->device->model)
                 : 'Equipo no disponible',
+            'dias_desde_ingreso' => $diasDesdeIngreso,
+            'situacion' => $situacion,
+            'mes_ingreso' => $order->received_at?->format('Y-m'),
         ];
     }
 }

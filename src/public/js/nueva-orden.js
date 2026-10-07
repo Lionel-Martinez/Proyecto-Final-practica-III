@@ -275,39 +275,162 @@
 
         /* ---------- servicio a presupuestar ---------- */
 
-    const servicioSelect = document.getElementById('servicio_id');
-    const precioEstimado = document.getElementById('precio-estimado');
-    let CATALOGO = [];
+    /* ---------- servicio a presupuestar ---------- */
 
-    const currency = (n) => `$${Number(n ?? 0).toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+const servicioSelect = document.getElementById('servicio_id');
+const servicioBusqueda = document.getElementById('servicio-busqueda');
+const catalogoLista = document.getElementById('catalogo-servicios-lista');
+const botonSinPresupuesto = document.querySelector('.servicio-sin-presupuesto');
+const precioEstimado = document.getElementById('precio-estimado');
 
-    fetch('/api/servicios', { headers: { 'Accept': 'application/json' } })
-        .then((r) => r.json())
-        .then((data) => {
-            CATALOGO = data;
-            CATALOGO_REV = data;
+let CATALOGO = [];
 
-            const porCategoria = {};
-            data.forEach((s) => {
-                porCategoria[s.category] = porCategoria[s.category] || [];
-                porCategoria[s.category].push(s);
-            });
+const currency = (n) =>
+    `$${Number(n ?? 0).toLocaleString('es-AR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    })}`;
 
-            Object.keys(porCategoria).forEach((categoria) => {
-                const optgroup = document.createElement('optgroup');
-                optgroup.label = categoria;
+function seleccionarServicio(servicio) {
+    servicioSelect.value = servicio ? String(servicio.id) : '';
 
-                porCategoria[categoria].forEach((s) => {
-                    const option = document.createElement('option');
-                    option.value = s.id;
-                    option.textContent = `${s.name} — ${currency(s.reference_price)}`;
-                    optgroup.appendChild(option);
+    if (servicio) {
+        precioEstimado.textContent =
+            `Seleccionado: ${servicio.name} — ${currency(servicio.reference_price)}`;
+        precioEstimado.hidden = false;
+    } else {
+        precioEstimado.hidden = true;
+    }
+
+    catalogoLista.querySelectorAll('.servicio-opcion').forEach((boton) => {
+        boton.classList.toggle(
+            'seleccionado',
+            servicio && boton.dataset.serviceId === String(servicio.id)
+        );
+    });
+}
+
+function renderCatalogo(filtro = '') {
+    catalogoLista.replaceChildren();
+
+    const termino = filtro.trim().toLocaleLowerCase('es-AR');
+
+    const filtrados = CATALOGO.filter((servicio) => {
+        const texto = [
+            servicio.brand || 'Todas las marcas',
+            servicio.category || 'Otros',
+            servicio.name,
+        ].join(' ').toLocaleLowerCase('es-AR');
+
+        return texto.includes(termino);
+    });
+
+    if (filtrados.length === 0) {
+        const mensaje = document.createElement('p');
+        mensaje.className = 'catalogo-vacio';
+        mensaje.textContent = 'No se encontraron servicios.';
+        catalogoLista.appendChild(mensaje);
+        return;
+    }
+
+    const porMarca = new Map();
+
+    filtrados.forEach((servicio) => {
+        const marca = servicio.brand || 'Todas las marcas';
+
+        if (!porMarca.has(marca)) {
+            porMarca.set(marca, new Map());
+        }
+
+        const categorias = porMarca.get(marca);
+        const categoria = servicio.category || 'Otros';
+
+        if (!categorias.has(categoria)) {
+            categorias.set(categoria, []);
+        }
+
+        categorias.get(categoria).push(servicio);
+    });
+
+    porMarca.forEach((categorias, marca) => {
+        const detallesMarca = document.createElement('details');
+        detallesMarca.className = 'catalogo-marca';
+        detallesMarca.open = termino !== '' || marca === 'Samsung';
+
+        const resumenMarca = document.createElement('summary');
+        resumenMarca.textContent = marca;
+        detallesMarca.appendChild(resumenMarca);
+
+        categorias.forEach((servicios, categoria) => {
+            const detallesCategoria = document.createElement('details');
+            detallesCategoria.className = 'catalogo-categoria';
+            detallesCategoria.open = termino !== '';
+
+            const resumenCategoria = document.createElement('summary');
+            resumenCategoria.textContent = categoria;
+            detallesCategoria.appendChild(resumenCategoria);
+
+            servicios.forEach((servicio) => {
+                const boton = document.createElement('button');
+                boton.type = 'button';
+                boton.className = 'servicio-opcion';
+                boton.dataset.serviceId = String(servicio.id);
+
+                const nombre = document.createElement('span');
+                nombre.className = 'servicio-opcion-nombre';
+                nombre.textContent = servicio.name;
+
+                const precio = document.createElement('span');
+                precio.className = 'servicio-opcion-precio';
+                precio.textContent = currency(servicio.reference_price);
+
+                boton.append(nombre, precio);
+
+                if (servicioSelect.value === String(servicio.id)) {
+                    boton.classList.add('seleccionado');
+                }
+
+                boton.addEventListener('click', () => {
+                    seleccionarServicio(servicio);
                 });
 
-                servicioSelect.appendChild(optgroup);
+                detallesCategoria.appendChild(boton);
             });
-        })
-        .catch(() => {});
+
+            detallesMarca.appendChild(detallesCategoria);
+        });
+
+        catalogoLista.appendChild(detallesMarca);
+    });
+}
+
+servicioBusqueda.addEventListener('input', () => {
+    renderCatalogo(servicioBusqueda.value);
+});
+
+botonSinPresupuesto.addEventListener('click', () => {
+    seleccionarServicio(null);
+});
+
+fetch('/api/servicios', {
+    headers: { Accept: 'application/json' },
+})
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error('No se pudo cargar el catálogo de servicios.');
+        }
+
+        return response.json();
+    })
+    .then((data) => {
+        CATALOGO = data;
+        CATALOGO_REV = data;
+        renderCatalogo();
+    })
+    .catch((error) => {
+        console.error(error);
+        catalogoLista.textContent = 'No se pudo cargar el catálogo. Recargá la página.';
+    });
 
     servicioSelect?.addEventListener('change', () => {
         const servicio = CATALOGO.find((s) => String(s.id) === servicioSelect.value);

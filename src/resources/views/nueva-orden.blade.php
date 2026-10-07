@@ -105,11 +105,30 @@
                     </div>
 
                     <div class="field">
-                        <label for="servicio_id">Servicio a presupuestar (opcional)</label>
-                        <select id="servicio_id" name="servicio_id">
-                            <option value="">Sin presupuestar por ahora</option>
-                        </select>
-                        <p id="precio-estimado" style="margin:0.5rem 0 0; font-size:0.85rem; font-weight:700; color:#1a9d4b;" hidden></p>
+                        <label for="servicio-busqueda">Servicio a presupuestar</label>
+
+                        <input
+                            type="search"
+                            id="servicio-busqueda"
+                            placeholder="Buscar por marca, modelo, servicio o categoría..."
+                            autocomplete="off"
+                        >
+
+                        <div id="catalogo-servicios" class="catalogo-servicios">
+                            <button type="button" class="servicio-sin-presupuesto" data-service-id="">
+                            Sin presupuestar por ahora
+                            </button>
+
+                            <div id="catalogo-servicios-lista"></div>
+                        </div>
+
+                        <input type="hidden" id="servicio_id" name="servicio_id" value="">
+
+                        <p
+                            id="precio-estimado"
+                            style="margin:0.5rem 0 0; font-size:0.85rem; font-weight:700; color:#1a9d4b;"
+                            hidden
+                        ></p>
                     </div>
                 </div>
 

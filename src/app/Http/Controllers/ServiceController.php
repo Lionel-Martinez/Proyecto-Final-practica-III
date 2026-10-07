@@ -17,7 +17,7 @@ class ServiceController extends Controller
 
     public function index(): JsonResponse
     {
-        $services = Service::orderBy('category')->orderBy('name')->get();
+        $services = Service::orderBy('brand')->orderBy('category')->orderBy('name')->get();
 
         return response()->json($services->map(fn (Service $s) => $this->format($s)));
     }
@@ -91,6 +91,7 @@ class ServiceController extends Controller
     private function validated(Request $request, ?int $ignoreId = null): array
     {
         return $request->validate([
+            'brand' => ['nullable', 'string', 'max:100'],
             'name' => [
                 'required', 'string', 'max:150',
                 Rule::unique('services', 'name')->ignore($ignoreId),
@@ -104,6 +105,7 @@ class ServiceController extends Controller
     {
         return [
             'id' => $s->id,
+            'brand' => $s->brand,
             'name' => $s->name,
             'category' => $s->category,
             'reference_price' => (float) $s->reference_price,

@@ -15,32 +15,8 @@
         <p>Arrancá una reparación y andá moviéndola por el tablero a medida que avanza.</p>
     </div>
 
-    <div class="board" id="board" data-api-url="{{ url('/api/work-queue') }}">
-
-        <section class="board-col" data-status="pendiente">
-            <header class="board-col-head">
-                <span class="board-col-title">Pendientes</span>
-                <span class="board-col-count" id="count-pendiente">0</span>
-            </header>
-            <div class="board-col-body" id="col-pendiente"></div>
-        </section>
-
-        <section class="board-col" data-status="progreso">
-            <header class="board-col-head board-col-head-progreso">
-                <span class="board-col-title">En Progreso</span>
-                <span class="board-col-count" id="count-progreso">0</span>
-            </header>
-            <div class="board-col-body" id="col-progreso"></div>
-        </section>
-
-        <section class="board-col" data-status="entregada">
-            <header class="board-col-head board-col-head-done">
-                <span class="board-col-title">Entregadas</span>
-                <span class="board-col-count" id="count-entregada">0</span>
-            </header>
-            <div class="board-col-body" id="col-entregada"></div>
-        </section>
-
+    <div class="board board-by-month" id="board" data-api-url="{{ url('/api/work-queue') }}">
+        <div id="board-months"></div>
     </div>
 
 @endsection

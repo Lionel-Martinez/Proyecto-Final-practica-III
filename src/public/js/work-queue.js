@@ -2,9 +2,6 @@
     const board = document.getElementById('board');
     const API_URL = board?.dataset.apiUrl;
 
-    const colPendiente = document.getElementById('col-pendiente');
-    const colProgreso = document.getElementById('col-progreso');
-    const colEntregada = document.getElementById('col-entregada');
 
     let ORDERS = [];
     let ordenSeleccionada = null;
@@ -42,81 +39,422 @@
 
         } catch (error) {
             console.error(error);
-            colPendiente.innerHTML = `<p class="board-empty">No se pudo cargar la cola de trabajo.</p>`;
+            document.getElementById('board-months').innerHTML = `<p class="board-empty">No se pudo cargar la cola de trabajo.</p>`;
         }
     }
 
     function renderBoard() {
-        const grupos = { pendiente: [], progreso: [], entregada: [] };
+    const contenedor = document.getElementById('board-months');
 
-        ORDERS.forEach((order) => grupos[order.columna]?.push(order));
-
-        renderColumna(colPendiente, grupos.pendiente, 'pendiente');
-        renderColumna(colProgreso, grupos.progreso, 'progreso');
-        renderColumna(colEntregada, grupos.entregada, 'entregada');
-
-        document.getElementById('count-pendiente').textContent = grupos.pendiente.length;
-        document.getElementById('count-progreso').textContent = grupos.progreso.length;
-        document.getElementById('count-entregada').textContent = grupos.entregada.length;
+    if (!contenedor) {
+        return;
     }
 
-        function renderColumna(container, orders, columna) {
-        if (!orders.length) {
-            container.innerHTML = `<p class="board-empty">Sin órdenes acá por ahora.</p>`;
-            return;
+    if (!ORDERS.length) {
+        contenedor.innerHTML = `
+            <p class="board-empty">
+                No hay órdenes en la cola de trabajo.
+            </p>
+        `;
+        return;
+    }
+
+    const meses = new Map();
+
+    ORDERS.forEach((order) => {
+        const mes = order.mes_ingreso || 'sin-fecha';
+
+        if (!meses.has(mes)) {
+            meses.set(mes, []);
         }
 
-        container.innerHTML = orders.map((order) => {
-            const esUrgente = order.priority === 'urgente';
-            const esListo = order.status === 'listo';
-            const esEntregado = order.status === 'entregado';
+        meses.get(mes).push(order);
+    });
 
-            let flag = '';
-            if (columna === 'pendiente' && esUrgente) {
-                flag = `<span class="job-flag"><span class="dot"></span>Urgente</span>`;
-            } else if (columna === 'progreso') {
-                flag = `<span class="job-flag is-progress">En progreso</span>`;
-            } else if (esListo) {
-                flag = `<span class="job-flag is-progress">Pendiente de retiro</span>`;
-            } else if (esEntregado) {
-                flag = `<span class="job-flag is-done">Entregada</span>`;
-            }
+    contenedor.innerHTML = [...meses.entries()]
+        .sort(([mesA], [mesB]) => mesB.localeCompare(mesA))
+        .map(([mes, orders]) => renderMes(mes, orders))
+        .join('');
+}
 
-            let botonPrincipal = '';
-            if (columna === 'pendiente') {
-                botonPrincipal = `<button type="button" class="start-btn" data-action="iniciar" data-order-id="${order.id}">Iniciar reparación</button>`;
-            } else if (columna === 'progreso') {
-                botonPrincipal = `<button type="button" class="start-btn" data-action="listo" data-order-id="${order.id}">Marcar como listo</button>`;
-            } else if (esListo) {
-                botonPrincipal = `<button type="button" class="start-btn" data-action="entregar" data-order-id="${order.id}">Confirmar entrega</button>`;
-            } else {
-                botonPrincipal = `<button type="button" class="start-btn" disabled>Entregada</button>`;
-            }
-
-            const botonCancelar = (columna === 'pendiente' || columna === 'progreso')
-                ? `<button type="button" class="cancel-btn" data-action="cancelar" data-order-id="${order.id}">Cancelar orden</button>`
-                : '';
-
-            return `
-                <article class="job-card status-${columna} priority-${escapeHtml(order.priority)}">
-                    <div class="job-card-head">
-                        <span class="job-order-chip">#${order.id}</span>
-                        ${flag}
-                    </div>
-                    <h3>${escapeHtml(order.cliente)}</h3>
-                    <p class="falla">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 1 1-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 1 1 5.4-5.4z"></path></svg>
-                        ${escapeHtml(order.equipo)} — ${escapeHtml(order.reported_problem)}
-                    </p>
-                    <div class="job-card-foot">
-                        <span class="job-date">Ingreso: ${formatFecha(order.received_at)}</span>
-                        ${botonPrincipal}
-                        ${botonCancelar}
-                    </div>
-                </article>
-            `;
-        }).join('');
+function nombreMes(clave) {
+    if (clave === 'sin-fecha') {
+        return 'Sin fecha de ingreso';
     }
+
+    const [anio, mes] = clave.split('-');
+
+    const fecha = new Date(Number(anio), Number(mes) - 1, 1);
+
+    return fecha.toLocaleDateString('es-AR', {
+        month: 'long',
+        year: 'numeric',
+    }).replace(/^./, (letra) => letra.toUpperCase());
+}
+
+function renderGrupoMes(orders, columna) {
+    const meses = agruparPorMes(orders);
+
+    return [...meses.entries()]
+        .sort(([mesA], [mesB]) => mesB.localeCompare(mesA))
+        .map(([mes, ordenes]) => {
+            return `
+                <section class="board-month">
+                    <h3 class="board-month-title">${escapeHtml(nombreMes(mes))}</h3>
+                    <div class="board-month-body">
+                        ${ordenes.map((order) => renderOrden(order, columna)).join('')}
+                    </div>
+                </section>
+            `;
+        })
+        .join('');
+}
+
+function renderColumna(container, orders, columna) {
+    if (!orders.length) {
+        container.innerHTML = `<p class="board-empty">Sin órdenes acá por ahora.</p>`;
+        return;
+    }
+
+    if (columna !== 'entregada') {
+        container.innerHTML = renderGrupoMes(orders, columna);
+        return;
+    }
+
+    const situaciones = {
+        retiro_pendiente: {
+            titulo: '🟢 Listos — retiro pendiente',
+            ordenes: [],
+        },
+        entregado: {
+            titulo: '🔵 Entregados',
+            ordenes: [],
+        },
+        olvidada: {
+            titulo: '🔴 Olvidados',
+            ordenes: [],
+        },
+    };
+
+    orders.forEach((order) => {
+        if (situaciones[order.situacion]) {
+            situaciones[order.situacion].ordenes.push(order);
+        }
+    });
+
+    container.innerHTML = Object.values(situaciones)
+        .filter((grupo) => grupo.ordenes.length)
+        .map((grupo) => `
+            <section class="board-situation">
+                <h3 class="board-situation-title">${grupo.titulo}</h3>
+                <div class="board-situation-body">
+                    ${renderGrupoMes(grupo.ordenes, 'entregada')}
+                </div>
+            </section>
+        `)
+        .join('');
+
+    if (!container.innerHTML) {
+        container.innerHTML = `<p class="board-empty">Sin órdenes acá por ahora.</p>`;
+    }
+}
+
+function renderBoard() {
+    const contenedor = document.getElementById('board-months');
+
+    if (!contenedor) {
+        return;
+    }
+
+    if (!ORDERS.length) {
+        contenedor.innerHTML = `
+            <p class="board-empty">
+                No hay órdenes en la cola de trabajo.
+            </p>
+        `;
+        return;
+    }
+
+    const meses = new Map();
+
+    ORDERS.forEach((order) => {
+        const mes = order.mes_ingreso || 'sin-fecha';
+
+        if (!meses.has(mes)) {
+            meses.set(mes, []);
+        }
+
+        meses.get(mes).push(order);
+    });
+
+    contenedor.innerHTML = [...meses.entries()]
+        .sort(([mesA], [mesB]) => mesB.localeCompare(mesA))
+        .map(([mes, orders]) => renderMes(mes, orders))
+        .join('');
+}
+
+function nombreMes(clave) {
+    if (clave === 'sin-fecha') {
+        return 'Sin fecha de ingreso';
+    }
+
+    const [anio, mes] = clave.split('-');
+
+    const fecha = new Date(
+        Number(anio),
+        Number(mes) - 1,
+        1
+    );
+
+    return fecha.toLocaleDateString('es-AR', {
+        month: 'long',
+        year: 'numeric',
+    }).replace(/^./, (letra) => letra.toUpperCase());
+}
+
+function renderMes(mes, orders) {
+    const grupos = {
+        pendiente: [],
+        en_reparacion: [],
+        retiro_pendiente: [],
+        entregado: [],
+        olvidada: [],
+    };
+
+    orders.forEach((order) => {
+        if (order.status === 'recibido') {
+            grupos.pendiente.push(order);
+        } else if (order.status === 'en_reparacion') {
+            grupos.en_reparacion.push(order);
+        } else if (order.situacion === 'retiro_pendiente') {
+            grupos.retiro_pendiente.push(order);
+        } else if (order.situacion === 'entregado') {
+            grupos.entregado.push(order);
+        } else if (order.situacion === 'olvidada') {
+            grupos.olvidada.push(order);
+        }
+    });
+
+    const total = orders.length;
+
+    const situaciones = [
+        {
+            clave: 'pendiente',
+            titulo: '🟡 Pendientes',
+            orders: grupos.pendiente,
+        },
+        {
+            clave: 'en_reparacion',
+            titulo: '🔧 En reparación',
+            orders: grupos.en_reparacion,
+        },
+        {
+            clave: 'retiro_pendiente',
+            titulo: '🟢 Listos — retiro pendiente',
+            orders: grupos.retiro_pendiente,
+        },
+        {
+            clave: 'entregado',
+            titulo: '🔵 Entregados',
+            orders: grupos.entregado,
+        },
+        {
+            clave: 'olvidada',
+            titulo: '🔴 Olvidados',
+            orders: grupos.olvidada,
+        },
+    ];
+
+    const contenido = situaciones
+        .filter((grupo) => grupo.orders.length)
+        .map((grupo) => `
+            <section class="month-situation month-situation-${grupo.clave}">
+                <h3 class="month-situation-title">
+                    <span>${grupo.titulo}</span>
+                    <span class="month-situation-count">${grupo.orders.length}</span>
+                </h3>
+
+                <div class="month-situation-orders">
+                    ${grupo.orders
+                        .map((order) => renderOrden(order, grupo.clave))
+                        .join('')}
+                </div>
+            </section>
+        `)
+        .join('');
+
+    return `
+        <details class="board-month" open>
+            <summary class="board-month-head">
+                <span class="board-month-title">
+                    ${escapeHtml(nombreMes(mes))}
+                </span>
+
+                <span class="board-month-count">
+                    ${total}
+                </span>
+            </summary>
+
+            <div class="board-month-content">
+                ${contenido}
+            </div>
+        </details>
+    `;
+}
+
+function renderOrden(order, situacion) {
+    const esUrgente = order.priority === 'urgente';
+    const esListo = order.status === 'listo';
+    const esEntregado = order.status === 'entregado';
+
+    let flag = '';
+
+    if (situacion === 'olvidada') {
+        flag = `
+            <span class="job-flag is-forgotten">
+                Olvidada
+            </span>
+        `;
+    } else if (situacion === 'pendiente' && esUrgente) {
+        flag = `
+            <span class="job-flag">
+                <span class="dot"></span>
+                Urgente
+            </span>
+        `;
+    } else if (situacion === 'en_reparacion') {
+        flag = `
+            <span class="job-flag is-progress">
+                En reparación
+            </span>
+        `;
+    } else if (esListo) {
+        flag = `
+            <span class="job-flag is-progress">
+                Pendiente de retiro
+            </span>
+        `;
+    } else if (esEntregado) {
+        flag = `
+            <span class="job-flag is-done">
+                Entregada
+            </span>
+        `;
+    }
+
+    let botonPrincipal = '';
+
+    if (situacion === 'pendiente') {
+        botonPrincipal = `
+            <button
+                type="button"
+                class="start-btn"
+                data-action="iniciar"
+                data-order-id="${order.id}"
+            >
+                Iniciar reparación
+            </button>
+        `;
+    } else if (situacion === 'en_reparacion') {
+        botonPrincipal = `
+            <button
+                type="button"
+                class="start-btn"
+                data-action="listo"
+                data-order-id="${order.id}"
+            >
+                Marcar como listo
+            </button>
+        `;
+    } else if (esListo) {
+        botonPrincipal = `
+            <button
+                type="button"
+                class="start-btn"
+                data-action="entregar"
+                data-order-id="${order.id}"
+            >
+                Confirmar entrega
+            </button>
+        `;
+    } else {
+        botonPrincipal = `
+            <button
+                type="button"
+                class="start-btn"
+                disabled
+            >
+                Entregada
+            </button>
+        `;
+    }
+
+    const botonCancelar = (
+        situacion === 'pendiente'
+        || situacion === 'en_reparacion'
+    )
+        ? `
+            <button
+                type="button"
+                class="cancel-btn"
+                data-action="cancelar"
+                data-order-id="${order.id}"
+            >
+                Cancelar orden
+            </button>
+        `
+        : '';
+
+    const dias = Number(order.dias_desde_ingreso ?? 0);
+
+    let antiguedad;
+
+    if (dias === 0) {
+        antiguedad = 'Hoy';
+    } else if (dias === 1) {
+        antiguedad = 'Hace 1 día';
+    } else {
+        antiguedad = `Hace ${dias} días`;
+    }
+
+    return `
+        <article class="job-card status-${escapeHtml(situacion)} priority-${escapeHtml(order.priority)}">
+            <div class="job-card-head">
+                <span class="job-order-chip">#${order.id}</span>
+                ${flag}
+            </div>
+
+            <h3>${escapeHtml(order.cliente)}</h3>
+
+            <p class="falla">
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M14.7 6.3a4 4 0 1 1-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 1 1 5.4-5.4z"></path>
+                </svg>
+
+                ${escapeHtml(order.equipo)}
+                —
+                ${escapeHtml(order.reported_problem)}
+            </p>
+
+            <div class="job-card-foot">
+                <span class="job-date">
+                    Ingreso: ${formatFecha(order.received_at)}
+                    · ${antiguedad}
+                </span>
+
+                ${botonPrincipal}
+                ${botonCancelar}
+            </div>
+        </article>
+    `;
+}
 
         board?.addEventListener('click', async (event) => {
         const btn = event.target.closest('[data-action]');

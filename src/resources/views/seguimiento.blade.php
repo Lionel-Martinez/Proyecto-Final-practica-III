@@ -52,6 +52,86 @@
             background: #14161a; color: #fff; text-decoration: none;
             padding: 0.7rem 1.1rem; border-radius: 0.5rem; font-weight: 700; font-size: 0.85rem;
         }
+        .history { margin: 0; padding: 0; list-style: none; }
+
+.history-item {
+    position: relative;
+    padding: 0 0 1.2rem 1.7rem;
+}
+
+.history-item:last-child {
+    padding-bottom: 0;
+}
+
+.history-item::before {
+    content: "";
+    position: absolute;
+    left: 0.35rem;
+    top: 0.35rem;
+    bottom: 0;
+    width: 2px;
+    background: #e5e7eb;
+}
+
+.history-item:last-child::before {
+    display: none;
+}
+
+.history-dot {
+    position: absolute;
+    left: 0;
+    top: 0.2rem;
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    background: #1a9d4b;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 1px #1a9d4b;
+}
+
+.history-message {
+    margin: 0;
+    font-size: 0.84rem;
+    line-height: 1.4;
+    font-weight: 600;
+}
+
+.history-date {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.72rem;
+    color: #9aa0a8;
+}
+
+.retirement-alert {
+    border-radius: 0.9rem;
+    padding: 1rem 1.2rem;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+}
+
+.retirement-alert strong {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-size: 0.9rem;
+}
+
+.retirement-alert p {
+    margin: 0;
+    line-height: 1.45;
+}
+
+.retirement-alert-ready {
+    background: #eef8f0;
+    border: 1px solid #cdeed6;
+    color: #1a7d3c;
+}
+
+.retirement-alert-warning {
+    background: #fff4e5;
+    border: 1px solid #f2c078;
+    color: #9a5b00;
+}
     </style>
 </head>
 <body>
@@ -107,8 +187,60 @@
                 @if ($order->status === 'entregado' && $order->warranty_code)
                     <li><span>Garantía</span><span>{{ $order->warranty_code }}</span></li>
                 @endif
+                @if ($order->status === 'listo' && $order->received_at)
+    @php
+        $diasDesdeIngreso = $order->received_at
+            ->startOfDay()
+            ->diffInDays(now()->startOfDay());
+    @endphp
+
+    @if ($diasDesdeIngreso > 10)
+        <div class="retirement-alert retirement-alert-warning">
+            <strong>⚠️ Retiro pendiente</strong>
+            <p>
+                Tu equipo está listo para retirar y lleva
+                {{ $diasDesdeIngreso }} días en el taller.
+                Te recomendamos retirarlo a la brevedad.
+            </p>
+        </div>
+    @else
+        <div class="retirement-alert retirement-alert-ready">
+            <strong>✓ Equipo listo para retirar</strong>
+            <p>
+                La reparación terminó. Podés acercarte al taller para retirar tu equipo.
+            </p>
+        </div>
+    @endif
+@endif
             </ul>
         </div>
+        <div class="card">
+            <h2 style="margin: 0 0 1.2rem; font-size: 1rem; font-weight: 800;">
+                Actualizaciones
+            </h2>
+
+    @if ($order->updates->isNotEmpty())
+        <ul class="history">
+            @foreach ($order->updates as $update)
+                <li class="history-item">
+                    <span class="history-dot"></span>
+
+                    <p class="history-message">
+                        {{ $update->message }}
+                    </p>
+
+                    <span class="history-date">
+                        {{ $update->created_at?->format('d/m/Y H:i') }}
+                    </span>
+                </li>
+            @endforeach
+        </ul>
+    @else
+        <p style="margin: 0; font-size: 0.84rem; color: #9aa0a8;">
+            Todavía no hay actualizaciones registradas.
+        </p>
+    @endif
+</div>
 
                 @if ($order->status === 'entregado')
             <div class="warranty">

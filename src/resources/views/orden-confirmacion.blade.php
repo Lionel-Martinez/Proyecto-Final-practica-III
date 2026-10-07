@@ -3,7 +3,9 @@
     $cliente = $order->device->customer;
     $nombreCliente = trim($cliente->first_name . ' ' . $cliente->last_name);
     $fechaIngreso = ($order->received_at ?? $order->created_at)->copy()->timezone('America/Argentina/Salta');
-    $urlSeguimiento = $order->tracking_code ? route('ordenes.seguimiento', $order->tracking_code) : null;
+    $urlSeguimiento = $order->tracking_code
+    ? rtrim(config('app.url'), '/') . '/seguimiento/' . $order->tracking_code
+    : null;
     $contactoTaller = collect([$settings->phone, $settings->email])->filter()->implode(' · ');
 @endphp
 <!DOCTYPE html>

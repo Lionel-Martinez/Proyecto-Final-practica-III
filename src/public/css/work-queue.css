@@ -325,3 +325,203 @@
 }
 
 .cancel-btn:hover { background: #fdf3f3; }
+
+
+/* Agrupación por mes y situación */
+
+.board-month {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.board-month + .board-month {
+  margin-top: 0.9rem;
+}
+
+.board-month-title {
+  margin: 0;
+  padding: 0.45rem 0.55rem;
+  border-bottom: 1px solid #d7dce2;
+  font-family: "Courier New", monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.board-month-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.board-situation + .board-situation {
+  margin-top: 1rem;
+}
+
+.board-situation-title {
+  margin: 0 0 0.55rem;
+  padding: 0.45rem 0.55rem;
+  border-bottom: 1px solid #d7dce2;
+  font-family: "Courier New", monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #4b5563;
+}
+
+.board-situation-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.job-flag.is-forgotten {
+  color: #e5484d;
+}
+
+.job-card.status-entregada {
+  opacity: 0.75;
+}
+
+.board-situation .board-month-title {
+  color: #6b7280;
+}
+
+/* Tablero organizado por meses */
+
+.board-by-month {
+  display: block;
+  width: 100%;
+}
+
+#board-months {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  width: 100%;
+}
+
+.board-by-month .board-month {
+  width: 100%;
+  margin: 0;
+  background: #f4f5f6;
+  border-radius: 0.8rem;
+  overflow: hidden;
+}
+
+.board-by-month .board-month-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1rem 1.1rem;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+.board-by-month .board-month-head::-webkit-details-marker {
+  display: none;
+}
+
+.board-by-month .board-month-head::after {
+  content: "›";
+  font-size: 1.2rem;
+  color: #9aa0a8;
+  transition: transform 0.2s ease;
+}
+
+.board-by-month .board-month[open] > .board-month-head::after {
+  transform: rotate(90deg);
+}
+
+.board-by-month .board-month-title {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-family: "Courier New", monospace;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #4b5563;
+}
+
+.board-by-month .board-month-count {
+  margin-left: auto;
+  margin-right: 0.8rem;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  padding: 0 0.4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: #9aa0a8;
+  color: #fff;
+  font-family: "Courier New", monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.board-by-month .board-month-content {
+  padding: 0 1rem 1rem;
+}
+
+.board-by-month .month-situation {
+  margin-top: 0.8rem;
+}
+
+.board-by-month .month-situation-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0 0.55rem;
+  padding: 0.5rem 0.6rem;
+  border-bottom: 1px solid #d7dce2;
+  font-family: "Courier New", monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #4b5563;
+}
+
+.board-by-month .month-situation-count {
+  min-width: 1.35rem;
+  height: 1.35rem;
+  padding: 0 0.3rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: #d7dce2;
+  color: #4b5563;
+  font-size: 0.68rem;
+}
+
+.board-by-month .month-situation-orders {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.board-by-month .job-card {
+  width: 100%;
+}
+
+.board-by-month .job-card.status-retiro_pendiente {
+  border-left-color: #1a9d4b;
+}
+
+.board-by-month .job-card.status-entregado {
+  border-left-color: #1a9d4b;
+}
+
+.board-by-month .job-card.status-olvidada {
+  border-left-color: #e5484d;
+}

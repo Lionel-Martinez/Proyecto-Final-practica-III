@@ -28,7 +28,10 @@ class RepairOrderWizardController extends Controller
     public function seguimiento(string $trackingCode): View
     {
         $order = RepairOrder::where('tracking_code', $trackingCode)
-            ->with('device.customer')
+            ->with([
+                'device.customer',
+                'updates' => fn ($query) => $query->latest(),
+            ])
             ->firstOrFail();
 
         return view('seguimiento', ['order' => $order, 'noSidebar' => true]);
@@ -141,6 +144,11 @@ class RepairOrderWizardController extends Controller
 
             $order->update([
                 'tracking_code' => 'UL-' . str_pad($order->id, 6, '0', STR_PAD_LEFT),
+            ]);
+            $order->updates()->create([
+                'user_id' => $request->user()->id,
+                'status' => 'recibido',
+                'message' => 'El equipo ingresó al taller.',
             ]);
 
             return $order;
