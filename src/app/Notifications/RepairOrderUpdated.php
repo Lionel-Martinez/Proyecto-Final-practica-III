@@ -25,20 +25,17 @@ class RepairOrderUpdated extends Notification
      * Contenido del email.
      */
     public function toMail(object $notifiable): MailMessage
-    {
-        $order = $this->update->repairOrder;
+{
+    $order = $this->update->repairOrder;
 
-        return (new MailMessage)
-            ->subject('Actualización de tu orden ' . $order->tracking_code)
-            ->greeting('Hola, ' . $notifiable->first_name)
-            ->line($this->update->message)
-            ->line('Estado actual: ' . ucfirst(str_replace('_', ' ', $this->update->status)))
-            ->action(
-                'Ver seguimiento',
-                route('ordenes.seguimiento', $order->tracking_code)
-            )
-            ->line('Podés consultar el estado de tu equipo desde el enlace de seguimiento.');
-    }
+    return (new MailMessage)
+        ->subject('Ulicel — Actualización de tu orden ' . $order->tracking_code)
+        ->view('emails.repair-order-updated', [
+            'notifiable' => $notifiable,
+            'update' => $this->update,
+            'order' => $order,
+        ]);
+}
 
     /**
      * Representación para otros canales.

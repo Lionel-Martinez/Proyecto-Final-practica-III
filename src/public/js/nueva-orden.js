@@ -110,8 +110,11 @@
         document.getElementById('review-dni').textContent =
             'DNI: ' + (document.getElementById('dni').value.trim() || 'sin registrar');
 
+        const telefono = document.getElementById('telefono').value.trim();
+        const email = document.getElementById('email').value.trim();
+
         document.getElementById('review-contacto').textContent =
-            document.getElementById('contacto').value.trim() || 'Sin contacto';
+            [telefono, email].filter(Boolean).join(' · ') || 'Sin contacto';
 
         const tipoSelect = document.getElementById('tipo');
         const tipoLabel = tipoSelect.options[tipoSelect.selectedIndex].text;
@@ -162,7 +165,8 @@
 
     const dniInput = document.getElementById('dni');
     const nombreInput = document.getElementById('nombre');
-    const contactoInput = document.getElementById('contacto');
+    const telefonoInput = document.getElementById('telefono');
+    const emailInput = document.getElementById('email');
     const clienteStatus = document.getElementById('cliente-status');
     const historyChip = document.getElementById('history-chip');
 
@@ -186,7 +190,8 @@
             if (data.encontrado) {
                 clienteExistenteId = data.cliente.id;
                 nombreInput.value = data.cliente.nombre;
-                contactoInput.value = data.cliente.telefono || data.cliente.email || '';
+                telefonoInput.value = data.cliente.telefono || '';
+                emailInput.value = data.cliente.email || '';
 
                 clienteStatus.hidden = false;
                 clienteStatus.classList.add('success');

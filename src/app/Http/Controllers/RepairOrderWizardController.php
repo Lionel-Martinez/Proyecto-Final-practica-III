@@ -71,7 +71,8 @@ class RepairOrderWizardController extends Controller
         $validated = $request->validate([
             'dni' => ['nullable', 'string', 'max:15'],
             'nombre' => ['required', 'string', 'max:110'],
-            'contacto' => ['nullable', 'string', 'max:150'],
+            'telefono' => ['nullable', 'string', 'max:30'],
+            'email' => ['nullable', 'email', 'max:255'],
             'tipo' => ['required', 'string', 'max:30'],
             'marca' => ['required', 'string', 'max:50'],
             'modelo' => ['required', 'string', 'max:80'],
@@ -94,16 +95,18 @@ class RepairOrderWizardController extends Controller
                 $lastName = count($nameParts) > 1 ? array_pop($nameParts) : '';
                 $firstName = implode(' ', $nameParts) ?: $validated['nombre'];
 
-                $contacto = $validated['contacto'] ?? null;
-                $esEmail = $contacto && str_contains($contacto, '@');
-
                 $customer = Customer::create([
                     'dni' => $validated['dni'] ?? null,
                     'first_name' => $firstName,
                     'last_name' => $lastName,
-                    'phone' => $esEmail ? null : $contacto,
-                    'email' => $esEmail ? $contacto : null,
+                    'phone' => $validated['telefono'] ?? null,
+                    'email' => $validated['email'] ?? null,
                     'outstanding_balance' => 0,
+                ]);
+            } else {
+                $customer->update([
+                    'phone' => $validated['telefono'] ?? $customer->phone,
+                    'email' => $validated['email'] ?? $customer->email,
                 ]);
             }
 

@@ -62,9 +62,16 @@
                         </div>
                     </div>
 
-                    <div class="field">
-                        <label for="contacto">Teléfono o email</label>
-                        <input type="text" id="contacto" name="contacto" placeholder="Ej: +54 9 387... o cliente@email.com">
+                    <div class="field-row">
+                        <div class="field">
+                            <label for="telefono">Teléfono</label>
+                            <input type="tel" id="telefono" name="telefono" placeholder="Ej: +54 9 387...">
+                        </div>
+
+                        <div class="field">
+                            <label for="email">Correo electrónico</label>
+                            <input type="email" id="email" name="email" placeholder="Ej: cliente@email.com">
+                        </div>
                     </div>
 
                     <p class="form-alert" id="cliente-status" hidden></p>
