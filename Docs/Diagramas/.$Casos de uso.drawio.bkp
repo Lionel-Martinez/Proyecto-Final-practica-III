@@ -1,6 +1,6 @@
 <mxfile host="Electron">
   <diagram name="Página-1" id="h3dPr8sgv0nS0h22tG8A">
-    <mxGraphModel dx="1794" dy="1306" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2472" dy="922" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -85,11 +85,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="X0SI12n7g_kSN54i-g1w-181" edge="1" parent="1" source="X0SI12n7g_kSN54i-g1w-166" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=none;startFill=0;dashed=1;" target="X0SI12n7g_kSN54i-g1w-175">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="650" y="360" />
-            </Array>
-          </mxGeometry>
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="X0SI12n7g_kSN54i-g1w-182" edge="1" parent="1" source="X0SI12n7g_kSN54i-g1w-166" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.972;exitY=0.378;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=classic;startFill=1;endArrow=none;endFill=0;dashed=1;exitPerimeter=0;" target="X0SI12n7g_kSN54i-g1w-171">
           <mxGeometry relative="1" as="geometry" />
@@ -97,14 +93,6 @@
         <mxCell id="X0SI12n7g_kSN54i-g1w-183" connectable="0" parent="X0SI12n7g_kSN54i-g1w-182" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;rotation=-25;" value="&amp;lt;&amp;lt;Extend&amp;gt;&amp;gt;" vertex="1">
           <mxGeometry relative="1" x="-0.1677" as="geometry">
             <mxPoint x="8" y="-19" as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="r_rNGqiL1GULqs8jECKG-5" edge="1" parent="1" source="X0SI12n7g_kSN54i-g1w-166" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;dashed=1;" target="r_rNGqiL1GULqs8jECKG-4">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="r_rNGqiL1GULqs8jECKG-8" connectable="0" parent="r_rNGqiL1GULqs8jECKG-5" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];rotation=30;" value="&amp;lt;&amp;lt;Include&lt;span style=&quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt;" vertex="1">
-          <mxGeometry relative="1" x="-0.0998" y="-4" as="geometry">
-            <mxPoint x="25" y="4" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="X0SI12n7g_kSN54i-g1w-166" parent="1" style="ellipse;whiteSpace=wrap;html=1;shapeInside=1;gradientColor=default;fillColor=none;" value="Registrar equipos" vertex="1">
@@ -131,16 +119,14 @@
         <mxCell id="X0SI12n7g_kSN54i-g1w-174" parent="1" style="ellipse;whiteSpace=wrap;html=1;shapeInside=1;gradientColor=default;fillColor=none;" value="Imprimir comprobante con código único" vertex="1">
           <mxGeometry height="80" width="120" x="820" y="280" as="geometry" />
         </mxCell>
-        <mxCell id="X0SI12n7g_kSN54i-g1w-175" parent="1" style="ellipse;whiteSpace=wrap;html=1;shapeInside=1;gradientColor=default;fillColor=none;" value="Verificar Garantía Digital mediante QR (Ngrok)" vertex="1">
+        <mxCell id="X0SI12n7g_kSN54i-g1w-175" parent="1" style="ellipse;whiteSpace=wrap;html=1;shapeInside=1;gradientColor=default;fillColor=none;" value="Garantia digital con QR" vertex="1">
           <mxGeometry height="80" width="120" x="820" y="390" as="geometry" />
         </mxCell>
         <mxCell id="X0SI12n7g_kSN54i-g1w-185" connectable="0" parent="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;rotation=5;" value="&amp;lt;&amp;lt;Include&amp;gt;&amp;gt;" vertex="1">
           <mxGeometry x="635" y="290" as="geometry" />
         </mxCell>
         <mxCell id="X0SI12n7g_kSN54i-g1w-186" connectable="0" parent="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;rotation=25;" value="&amp;lt;&amp;lt;Include&amp;gt;&amp;gt;" vertex="1">
-          <mxGeometry x="670" y="360" as="geometry">
-            <mxPoint x="-25.733284452065586" y="-7.86117493184571" as="offset" />
-          </mxGeometry>
+          <mxGeometry x="620" y="340" as="geometry" />
         </mxCell>
         <mxCell id="X0SI12n7g_kSN54i-g1w-187" parent="1" style="ellipse;whiteSpace=wrap;html=1;shapeInside=1;gradientColor=default;fillColor=none;" value="Foto del equipo al egreso" vertex="1">
           <mxGeometry height="80" width="120" x="820" y="600" as="geometry" />
@@ -174,18 +160,6 @@
         </mxCell>
         <mxCell id="X0SI12n7g_kSN54i-g1w-207" edge="1" parent="1" source="X0SI12n7g_kSN54i-g1w-144" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.033;entryY=0.588;entryDx=0;entryDy=0;entryPerimeter=0;" target="X0SI12n7g_kSN54i-g1w-201">
           <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="r_rNGqiL1GULqs8jECKG-6" edge="1" parent="1" source="r_rNGqiL1GULqs8jECKG-3" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="X0SI12n7g_kSN54i-g1w-175">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="r_rNGqiL1GULqs8jECKG-7" edge="1" parent="1" source="r_rNGqiL1GULqs8jECKG-3" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="r_rNGqiL1GULqs8jECKG-4">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="r_rNGqiL1GULqs8jECKG-3" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" value="Cliente" vertex="1">
-          <mxGeometry height="60" width="30" x="1350" y="410" as="geometry" />
-        </mxCell>
-        <mxCell id="r_rNGqiL1GULqs8jECKG-4" parent="1" style="ellipse;whiteSpace=wrap;html=1;shapeInside=1;gradientColor=default;fillColor=none;" value="Notificar cliente por Email (SMTP)" vertex="1">
-          <mxGeometry height="80" width="120" x="820" y="490" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
