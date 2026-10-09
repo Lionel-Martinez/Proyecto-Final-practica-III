@@ -79,18 +79,20 @@ class DeviceController extends Controller
         );
     }
 
-    public function destroy(
-        Customer $customer,
-        Device $device
-    ): JsonResponse {
-        abort_unless($device->customer_id === $customer->id, 404);
 
-        $device->delete();
+public function destroy(
+    Customer $customer,
+    Device $device
+): JsonResponse {
+    abort_unless($device->customer_id === $customer->id, 404);
 
-        return response()->json([
-            'message' => 'Dispositivo eliminado correctamente.',
-        ]);
-    }
+    $device->delete();
+
+    return response()->json([
+        'message' => 'Dispositivo eliminado correctamente. El historial de reparaciones se conserva.',
+    ]);
+
+}
 
     private function formatDevice(Device $device): array
     {

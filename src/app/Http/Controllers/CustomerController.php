@@ -88,13 +88,13 @@ class CustomerController extends Controller
     }
 
     public function destroy(Customer $customer): JsonResponse
-    {
-        $customer->delete();
+{
+    $customer->delete();
 
-        return response()->json([
-            'message' => 'Cliente eliminado correctamente.',
-        ]);
-    }
+    return response()->json([
+        'message' => 'Cliente eliminado correctamente. El historial de dispositivos y reparaciones se conserva.',
+    ]);
+}
 
     private function formatCustomer(Customer $customer): array
     {
